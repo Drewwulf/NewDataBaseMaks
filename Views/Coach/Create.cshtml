@@ -1,0 +1,33 @@
+﻿@model MaksGym.Models.Coach
+
+@{
+    ViewData["Title"] = "Додати тренера";
+}
+
+<h2>Додати тренера</h2>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="UserId" class="control-label">Користувач</label>
+        <select asp-for="UserId" class="form-control" asp-items="ViewBag.UsersList">
+            <option value="">-- Оберіть користувача --</option>
+        </select>
+        <span asp-validation-for="UserId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Фото</label>
+        <input type="file" name="PhotoFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Додати</button>
+    <a asp-action="Index" class="btn btn-secondary">Назад</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
