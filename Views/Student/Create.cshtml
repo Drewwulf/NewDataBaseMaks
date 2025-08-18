@@ -1,35 +1,11 @@
-﻿@model MaksGym.Models.Student
-
+﻿@model Student
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
-    ViewData["Title"] = "Додати студента";
 }
+<form  method="post" asp-controller="Student" asp-action="Create">
 
-<h2>Додати студента</h2>
 
-<form asp-action="Create" enctype="multipart/form-data" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Вибір користувача -->
-    <div class="form-group">
-        <label asp-for="UserId" class="control-label">Користувач</label>
-        <select asp-for="UserId" class="form-control" asp-items="ViewBag.UsersList">
-            <option value="">-- Оберіть користувача --</option>
-        </select>
-        <span asp-validation-for="UserId" class="text-danger"></span>
-    </div>
-
-    <!-- Фото -->
-    <div class="form-group">
-        <label class="control-label">Фото</label>
-        <input type="file" name="PhotoFile" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Додати</button>
-    <a asp-action="Index" class="btn btn-secondary">Назад</a>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

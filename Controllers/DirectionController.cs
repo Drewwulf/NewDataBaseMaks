@@ -26,8 +26,8 @@ public class DirectionController : Controller
         {
             _context.Directions.Add(direction);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Create));
         }
-        return View(direction);
+        return View("Create");
     }
 }

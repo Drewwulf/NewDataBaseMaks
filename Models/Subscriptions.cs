@@ -6,13 +6,12 @@ namespace MaksGym.Models
     public class Subscription
     {
         public int SubscriptionId { get; set; }       // PK
-        public string Name { get; set; } = null!;
+        public string Name { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        public ICollection<StudentsToSubscription> StudentsToSubscriptions { get; set; }
-     = new List<StudentsToSubscription>();
+        public ICollection<StudentsToSubscription> StudentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
 
     }
 }

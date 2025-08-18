@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MaksGym.styles.css" asp-append-version="true" />
+  
 </head>
 <body>
     <header>
@@ -24,11 +25,20 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>  <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Direction" asp-action="Create">Напрямок</a>
+                        </li>  <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="Index">Зали</a>
+                        </li>  <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Subscription" asp-action="Create">Абонементи</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
+
+
+       
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -44,6 +54,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

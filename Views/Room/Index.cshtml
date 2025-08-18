@@ -1,0 +1,48 @@
+﻿@model MaksGym.Models.ViewModels.RoomViewModel
+@{
+    ViewData["Title"] = "Додати зал";
+}
+
+
+<form  asp-action="Create" method="post">
+    <label asp-for="NewRoom.RoomName"></label>
+    <input asp-for="NewRoom.RoomName" />
+    <span asp-validation-for="NewRoom.RoomName"></span>
+
+    <label asp-for="NewRoom.RoomDescription"></label>
+    <input asp-for="NewRoom.RoomDescription" />
+    <span asp-validation-for="NewRoom.RoomDescription"></span>
+
+    <input type="submit" value="Створити кімнату" />
+
+</form>
+
+<table>
+
+    <thead>
+
+        <tr>
+            <th>Id</th>
+            <th>Назва Кімнати</th>
+            <th>Опис</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var room in Model.RoomList)
+        {
+            <tr>
+                <td>@room.RoomId</td>
+                <td>@room.RoomName</td>
+                <td>@room.RoomDescription</td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

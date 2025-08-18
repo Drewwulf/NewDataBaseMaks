@@ -1,5 +1,6 @@
 ﻿using MaksGym.Data;
 using MaksGym.Models;
+using MaksGym.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,21 +14,35 @@ public class RoomController : Controller
         _context = context;
     }
 
-    public IActionResult Create()
+    public IActionResult Index()
     {
-        return View();
+
+        var model = new RoomViewModel
+        {
+            NewRoom = new Room(), 
+            RoomList  = _context.Rooms.ToList(),
+        };
+        return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(Room room)
+    public IActionResult Create(Room newRoom)
     {
         if (ModelState.IsValid)
         {
-            _context.Rooms.Add(room);
+            _context.Rooms.Add(newRoom);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-        return View(room);
+
+        var model = new RoomViewModel
+        {
+            NewRoom = newRoom,
+            RoomList = _context.Rooms.ToList()
+        };
+        return View("Index", model);
     }
+
+
 }

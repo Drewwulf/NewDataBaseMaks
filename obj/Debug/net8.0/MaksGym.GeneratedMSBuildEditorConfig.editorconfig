@@ -52,8 +52,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Cobta/source/repos/MaksGym/MaksGym/Views/Room/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVxDcmVhdGUuY3NodG1s
+[C:/Users/Cobta/source/repos/MaksGym/MaksGym/Views/Room/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9vbVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Cobta/source/repos/MaksGym/MaksGym/Views/Shared/Error.cshtml]
@@ -66,6 +66,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Cobta/source/repos/MaksGym/MaksGym/Views/Student/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Cobta/source/repos/MaksGym/MaksGym/Views/Subscription/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3Vic2NyaXB0aW9uXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Cobta/source/repos/MaksGym/MaksGym/Views/_ViewImports.cshtml]
