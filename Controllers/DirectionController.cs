@@ -1,5 +1,7 @@
 ﻿using MaksGym.Data;
+using MaksGym.Migrations;
 using MaksGym.Models;
+using MaksGym.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +15,16 @@ public class DirectionController : Controller
         _context = context;
     }
 
-    public IActionResult Create()
+    public IActionResult Index()
     {
-        return View();
+        var direction = new DirectionViewModel
+        {
+            direction = new Direction(),
+            directions = _context.Directions.ToList()
+
+        };
+
+        return View(direction);
     }
 
     [HttpPost]
@@ -26,8 +35,26 @@ public class DirectionController : Controller
         {
             _context.Directions.Add(direction);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction(nameof(Index));
         }
-        return View("Create");
+        var model = new DirectionViewModel
+        {
+            direction = new Direction(),
+            directions = _context.Directions.ToList()
+
+        };
+        return View("Index",model);
+    }
+    [HttpGet]
+    public IActionResult Delete(int id) {
+
+        var direction = _context.Directions.Find(id);
+        if (direction != null)
+        {
+            direction.isDeleted = true;
+            _context.SaveChanges(); return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
+
     }
 }

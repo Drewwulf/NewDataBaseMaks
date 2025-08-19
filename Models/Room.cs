@@ -14,7 +14,7 @@ namespace MaksGym.Models
         [Display(Name = "Введіть опис кімнати")]
 
         public string? RoomDescription { get; set; }
-
+        public bool IsDeleted { get; set; } = false;
         public ICollection<Shedule> Shedules { get; set; } = new List<Shedule>();
     }
 }

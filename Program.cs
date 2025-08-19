@@ -18,6 +18,11 @@ namespace MaksGym
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 4;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
@@ -70,17 +75,18 @@ namespace MaksGym
             }
 
             // ????????? ??????, ???? ???? ?????
-            var adminEmail = "admin@example.com";
-            var adminPassword = "Admin123!"; // ?????????? ??????? ????? ??????? ?????
+            var adminPhone = "0000000000"; // ? ????? ????????
+            var adminPassword = "Admin123!";
 
-            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            var adminUser = await userManager.FindByNameAsync(adminPhone);
             if (adminUser == null)
             {
                 adminUser = new ApplicationUser
                 {
-                    UserName = adminEmail,
-                    Email = adminEmail,
+                    UserName = adminPhone,
+                    PhoneNumber = adminPhone,
                     FullName = "Super Admin",
+                    Email = "admin@example.com",
                     EmailConfirmed = true
                 };
 

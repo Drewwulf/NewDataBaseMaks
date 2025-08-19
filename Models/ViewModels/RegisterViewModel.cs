@@ -1,22 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MaksGym.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required, EmailAddress]
-        public string Email { get; set; } = null!;
+        [Required(ErrorMessage = "Вкажіть номер телефону")]
+        [Phone(ErrorMessage = "Некоректний формат номера телефону")]
+        [Display(Name = "Номер телефону")]
+        public string PhoneNumber { get; set; } = null!;
 
-        [Required]
+        [Required(ErrorMessage = "Вкажіть повне ім'я")]
+        [Display(Name = "ПІБ")]
         public string FullName { get; set; } = null!;
 
         [DataType(DataType.Date)]
+        [Display(Name = "Дата народження")]
         public DateTime? DateOfBirth { get; set; }
 
-        [Required, DataType(DataType.Password)]
+        [Required(ErrorMessage = "Вкажіть пароль")]
+        [DataType(DataType.Password)]
         public string Password { get; set; } = null!;
 
-        [Required, DataType(DataType.Password), Compare("Password")]
+        [Required(ErrorMessage = "Підтвердіть пароль")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Паролі не співпадають")]
         public string ConfirmPassword { get; set; } = null!;
     }
 }

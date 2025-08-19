@@ -2,7 +2,6 @@
 using MaksGym.Models.AccountViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace MaksGym.Controllers
 {
@@ -18,11 +17,9 @@ namespace MaksGym.Controllers
             _signInManager = signInManager;
         }
 
-        // GET: /Account/Register
         [HttpGet]
         public IActionResult Register() => View();
 
-        // POST: /Account/Register
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
@@ -30,18 +27,19 @@ namespace MaksGym.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Email = model.Email,
+                    UserName = model.PhoneNumber,          // логін = телефон
+                    PhoneNumber = model.PhoneNumber,
                     FullName = model.FullName,
-                    DateOfBirth = model.DateOfBirth
+                    DateOfBirth = model.DateOfBirth,
+                    Email = $"{model.PhoneNumber}@example.com" // ⚡ підставний Email
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    // Роль за замовчуванням — "User"
-                    await _userManager.AddToRoleAsync(user, "User");
+                    // Додаємо роль "Student"
+                    await _userManager.AddToRoleAsync(user, "Student");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
@@ -54,29 +52,25 @@ namespace MaksGym.Controllers
             return View(model);
         }
 
-        // GET: /Account/Login
         [HttpGet]
         public IActionResult Login() => View();
 
-        // POST: /Account/Login
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public async Task<IActionResult> Login(string phoneNumber, string password)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, model.Password, model.RememberMe, false);
+            var user = await _userManager.FindByNameAsync(phoneNumber); // ⚡ пошук по телефону
 
+            if (user != null)
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
                 if (result.Succeeded)
                     return RedirectToAction("Index", "Home");
-
-                ModelState.AddModelError("", "Невірний логін або пароль");
             }
 
-            return View(model);
+            ModelState.AddModelError("", "Невірний номер телефону або пароль");
+            return View();
         }
 
-        // GET: /Account/Logout
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

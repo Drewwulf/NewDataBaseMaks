@@ -10,6 +10,7 @@ namespace MaksGym.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
         public ICollection<StudentsToSubscription> StudentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
 

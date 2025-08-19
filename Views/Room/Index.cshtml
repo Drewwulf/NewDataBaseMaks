@@ -4,7 +4,7 @@
 }
 
 
-<form  asp-action="Create" method="post">
+<form asp-action="Create" method="post">
     <label asp-for="NewRoom.RoomName"></label>
     <input asp-for="NewRoom.RoomName" />
     <span asp-validation-for="NewRoom.RoomName"></span>
@@ -31,11 +31,15 @@
     <tbody>
         @foreach (var room in Model.RoomList)
         {
-            <tr>
-                <td>@room.RoomId</td>
-                <td>@room.RoomName</td>
-                <td>@room.RoomDescription</td>
-            </tr>
+            @if (!room.IsDeleted)
+            {
+                <tr>
+                    <td>@room.RoomId</td>
+                    <td>@room.RoomName</td>
+                    <td>@room.RoomDescription</td>
+                    <td><a asp-action="Delete" asp-route-id="@room.RoomId"> Видалити</a></td>
+                </tr>
+            }
         }
     </tbody>
 

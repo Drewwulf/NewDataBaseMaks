@@ -1,0 +1,58 @@
+﻿@model MaksGym.Models.ViewModels.DirectionViewModel
+
+@{
+    ViewData["Title"] = "Додати напрямок";
+}
+
+<h2>Додати напрямок</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="direction.DirectionName" class="control-label"></label>
+        <input asp-for="direction.DirectionName" class="form-control" />
+        <span asp-validation-for="direction.DirectionName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="direction.DirectionDescription" class="control-label"></label>
+        <textarea asp-for="direction.DirectionDescription" class="form-control"></textarea>
+        <span asp-validation-for="direction.DirectionDescription" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Додати</button>
+    <a asp-action="Index" class="btn btn-secondary">Назад</a>
+</form>
+<table>
+
+    <thead>
+
+        <tr>
+            <th>Id</th>
+            <th>Назва Кімнати</th>
+            <th>Опис</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var direction in Model.directions)
+        {
+            @if (!direction.isDeleted)
+            {
+                <tr>
+                    <td>@direction.DirectionId</td>
+                    <td>@direction.DirectionName</td>
+                    <td>@direction.DirectionDescription</td>
+                    <td><a asp-action="Delete" asp-route-id="@direction.DirectionId"> Видалити</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -2,7 +2,8 @@
 {
     public class RoomViewModel
     {
-        public Room NewRoom { get; set; }
-        public List<Room> RoomList { get; set; }
+        public Room NewRoom { get; set; } = new Room();  
+
+        public List<Room> RoomList { get; set; } = new List<Room>(); 
     }
 }

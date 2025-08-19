@@ -4,12 +4,15 @@ namespace MaksGym.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required, EmailAddress]
-        public string Email { get; set; } = null!;
+        [Required, Phone]
+        [Display(Name = "Номер телефону")]
+        public string PhoneNumber { get; set; } = null!;
 
         [Required, DataType(DataType.Password)]
+        [Display(Name = "Пароль")]
         public string Password { get; set; } = null!;
 
+        [Display(Name = "Запам’ятати мене")]
         public bool RememberMe { get; set; }
     }
 }

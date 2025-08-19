@@ -16,7 +16,7 @@ public class RoomController : Controller
 
     public IActionResult Index()
     {
-
+       
         var model = new RoomViewModel
         {
             NewRoom = new Room(), 
@@ -44,5 +44,15 @@ public class RoomController : Controller
         return View("Index", model);
     }
 
+    [HttpGet]
+    public IActionResult Delete(int id)
+    {  
 
+        var room = _context.Rooms.Find(id);
+        if (room != null) { 
+        room.IsDeleted = true;
+            _context.SaveChanges(); return RedirectToAction(nameof(Index));
+        }
+        return RedirectToAction(nameof(Index));
+    }
 }

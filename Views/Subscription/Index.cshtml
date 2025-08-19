@@ -1,0 +1,52 @@
+﻿@model MaksGym.Models.ViewModels.SubscriptionViewModel
+
+@{
+    ViewData["Title"] = "Додати підписку";
+}
+
+<h2>Додати абонемент</h2>
+
+<form asp-controller="Subscription" asp-action="Create" method="post">
+    <label asp-for="subscription.Name"></label>
+    <input asp-for="subscription.Name" />
+    <span asp-validation-for="subscription.Name"></span>
+
+    <label asp-for="subscription.Price"></label>
+    <input asp-for="subscription.Price" />
+    <span asp-validation-for="subscription.Price"></span>
+
+    <input type="submit" value="Додати підписку" />
+
+</form>
+<table>
+
+    <thead>
+
+        <tr>
+            <th>Id</th>
+            <th>Назва Кімнати</th>
+            <th>Опис</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var subscription in Model.subscriptions)
+        {
+            @if (!subscription.IsDeleted)
+            {
+                <tr>
+                    <td>@subscription.SubscriptionId</td>
+                    <td>@subscription.Name</td>
+                    <td>@subscription.Price</td>
+                    <td><a asp-action="Delete" asp-route-id="@subscription.SubscriptionId"> Видалити</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

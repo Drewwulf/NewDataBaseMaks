@@ -8,7 +8,7 @@ namespace MaksGym.Models
         public int DirectionId { get; set; }                 // PK
         public string DirectionName { get; set; } = null!;
         public string? DirectionDescription { get; set; }
-
+        public bool isDeleted { get; set; } = false;
         public ICollection<Group> Groups { get; set; } = new List<Group>();
     }
 }

@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿     @using Microsoft.AspNetCore.Identity
+            @inject SignInManager<MaksGym.Models.ApplicationUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,15 +29,36 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Direction" asp-action="Create">Напрямок</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Direction" asp-action="Index">Напрямок</a>
                         </li>  <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Room" asp-action="Index">Зали</a>
                         </li>  <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Subscription" asp-action="Create">Абонементи</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Subscription" asp-action="Index">Абонементи</a>
                         </li>
                     </ul>
                 </div>
             </div>
+       
+            <ul class="navbar-nav ms-auto">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item">
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
+                            <button type="submit" class="btn btn-link nav-link text-dark">Вийти</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Увійти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Реєстрація</a>
+                    </li>
+                }
+            </ul>
+
         </nav>
 
 
