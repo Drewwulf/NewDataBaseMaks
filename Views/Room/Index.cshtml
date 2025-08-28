@@ -3,47 +3,87 @@
     ViewData["Title"] = "Додати зал";
 }
 
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Додати зал</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<form asp-action="Create" method="post">
-    <label asp-for="NewRoom.RoomName"></label>
-    <input asp-for="NewRoom.RoomName" />
-    <span asp-validation-for="NewRoom.RoomName"></span>
+                        <div class="mb-3">
+                            <label asp-for="NewRoom.RoomName" class="form-label fw-bold"></label>
+                            <input asp-for="NewRoom.RoomName" class="form-control" placeholder="Введіть назву залу" />
+                            <span asp-validation-for="NewRoom.RoomName" class="text-danger"></span>
+                        </div>
 
-    <label asp-for="NewRoom.RoomDescription"></label>
-    <input asp-for="NewRoom.RoomDescription" />
-    <span asp-validation-for="NewRoom.RoomDescription"></span>
+                        <div class="mb-3">
+                            <label asp-for="NewRoom.RoomDescription" class="form-label fw-bold"></label>
+                            <textarea asp-for="NewRoom.RoomDescription" class="form-control" rows="3" placeholder="Опишіть зал"></textarea>
+                            <span asp-validation-for="NewRoom.RoomDescription" class="text-danger"></span>
+                        </div>
 
-    <input type="submit" value="Створити кімнату" />
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-plus-circle"></i> Створити кімнату
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left"></i> Назад
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-</form>
-
-<table>
-
-    <thead>
-
-        <tr>
-            <th>Id</th>
-            <th>Назва Кімнати</th>
-            <th>Опис</th>
-        </tr>
-
-    </thead>
-    <tbody>
-        @foreach (var room in Model.RoomList)
-        {
-            @if (!room.IsDeleted)
-            {
-                <tr>
-                    <td>@room.RoomId</td>
-                    <td>@room.RoomName</td>
-                    <td>@room.RoomDescription</td>
-                    <td><a asp-action="Delete" asp-route-id="@room.RoomId"> Видалити</a></td>
-                </tr>
-            }
-        }
-    </tbody>
-
-</table>
+    <!-- Таблиця -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0">Список залів</h4>
+                </div>
+                <div class="card-body p-3">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Назва</th>
+                                    <th scope="col">Опис</th>
+                                    <th scope="col" class="text-center">Дії</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var room in Model.RoomList)
+                                {
+                                    if (!room.IsDeleted)
+                                    {
+                                        <tr>
+                                            <td>@room.RoomId</td>
+                                            <td>@room.RoomName</td>
+                                            <td>@room.RoomDescription</td>
+                                            <td class="text-center">
+                                                <a asp-action="Delete" asp-route-id="@room.RoomId"
+                                                   class="btn btn-outline-danger btn-sm">
+                                                    <i class="bi bi-trash"></i> Видалити
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @{

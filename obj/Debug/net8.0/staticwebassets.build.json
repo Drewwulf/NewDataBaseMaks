@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "f8l+5DEdY6XE5z6+vbigHiGaFoIQdtaz5HO1RiZNXFs=",
+  "Hash": "4GGYtMTBsSs1idEFVz/lBISvNHZPsuofLKC6/RSULe4=",
   "Source": "MaksGym",
   "BasePath": "_content/MaksGym",
   "Mode": "Default",
@@ -1317,6 +1317,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png",
+      "SourceId": "MaksGym",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\",
+      "BasePath": "_content/MaksGym",
+      "RelativePath": "uploads/98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "18xqk93ijt",
+      "Integrity": "sTLom4UKqzQm1+piEDS21WCdgPqs0LjG0fXsIWIiP0M=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png"
     }
   ],
   "Endpoints": [
@@ -6401,6 +6422,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-U/J/r+0OA/Zc9VjdO0jhjmQ6dG3DuPqVglGPprGu7r4="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.18xqk93ijt.png",
+      "AssetFile": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "109728"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"sTLom4UKqzQm1+piEDS21WCdgPqs0LjG0fXsIWIiP0M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 27 Aug 2025 16:14:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "18xqk93ijt"
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-sTLom4UKqzQm1+piEDS21WCdgPqs0LjG0fXsIWIiP0M="
+        }
+      ]
+    },
+    {
+      "Route": "uploads/98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png",
+      "AssetFile": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "109728"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"sTLom4UKqzQm1+piEDS21WCdgPqs0LjG0fXsIWIiP0M=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 27 Aug 2025 16:14:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-sTLom4UKqzQm1+piEDS21WCdgPqs0LjG0fXsIWIiP0M="
         }
       ]
     }

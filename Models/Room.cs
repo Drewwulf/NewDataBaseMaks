@@ -15,6 +15,6 @@ namespace MaksGym.Models
 
         public string? RoomDescription { get; set; }
         public bool IsDeleted { get; set; } = false;
-        public ICollection<Shedule> Shedules { get; set; } = new List<Shedule>();
+        public ICollection<Schedule> Shedules { get; set; } = new List<Schedule>();
     }
 }

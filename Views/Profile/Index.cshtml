@@ -1,0 +1,172 @@
+﻿@model MaksGym.Models.ViewModels.ProfileViewModel                              
+@{
+    ViewData["Title"] = "Дашборд";
+}
+
+<style>
+    .dash-wrap {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: auto auto auto 180px 1fr 1fr;
+    grid-template-areas:
+    "title   title"
+    "name    name"
+    "group   group"
+    "avatar  status"
+    "avatar  term"
+    "links   news";
+    gap: 14px;
+    max-width: 1100px;
+    margin: 0 auto;
+    }
+
+    .card {
+    border: 2px solid #111;
+    border-radius: 8px;
+    padding: 18px;
+    white-space: pre-wrap;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 80px;
+    }
+
+    .title {
+    grid-area: title;
+    font-size: 30px;
+    border: none;
+    padding: 0;
+    text-align: center;
+    }
+
+    .name {
+    grid-area: name;
+    font-size: 22px;
+    }
+
+    .group {
+    grid-area: group;
+    font-size: 22px;
+    }
+
+    .avatar {
+    grid-area: avatar;
+    min-height: 380px;
+    background: linear-gradient(#eef7fd, #eef7fd 55%, #dfe7c6 55%, #dfe7c6);
+    }
+
+    .status {
+    grid-area: status;
+    }
+
+    .term {
+    grid-area: term;
+    }
+
+    .links {
+    grid-area: links;
+    min-height: 300px;
+    }
+
+    .news {
+    grid-area: news;
+    min-height: 300px;
+    }
+
+    /* --- Адаптив --- */
+    @@media (max-width: 768px) {
+    .dash-wrap
+
+    {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "title"
+    "name"
+    "group"
+    "avatar"
+    "status"
+    "term"
+    "links"
+    "news";
+    }
+
+    .title {
+    text-align: center;
+    font-size: 24px;
+    }
+
+    .avatar {
+    min-height: 220px;
+    }
+
+    .links, .news {
+    min-height: 200px;
+    }
+
+    }
+</style>
+
+<div class="dash-wrap">
+    <div class="title">
+        <ul>
+            @foreach (var direction in Model.Directions)
+            {
+                <li>@direction</li>
+            }
+        </ul>
+    </div>
+
+    <div class="card name">@Model.UserName</div>
+    <div class="card group">
+
+        <ul>
+            @foreach(var group in Model.Groups)
+            {
+                <li>@group</li>
+            }
+        </ul>
+    </div>
+
+    <div class="card avatar">АВАТАР</div>
+
+    <div class="card status">СТАТУС АБОНЕМЕНТА</div>
+
+    <div class="card term">ТЕРМІН ДІЇ</div>
+
+    <div class="card links">КОРИСНІ ПОСИЛАННЯ</div>
+
+    <div class="card news">НОВИНИ<br />АБО<br />РЕКЛАМА</div>
+</div>
+<div>
+
+    <h2>Твій графік занять</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Група</th>
+                <th>День</th>
+                <th>Час</th>
+                <th>Напрямок</th>
+                <th>Тренер</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in Model.groups)
+            {
+                @foreach (var schedule in group.Shedules)
+                {
+                    <tr>
+                        <td>@group.GroupName</td>
+                        <td>@schedule.DayOfWeek</td>
+                        <td>@schedule.StartTime - @schedule.EndTime</td>
+                        <td>@group.Direction.DirectionName</td>
+                        <td>@group.Coach.User.FullName</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>

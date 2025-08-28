@@ -245,6 +245,10 @@
       "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
     },
     {
+      "Id": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png",
+      "PackagePath": "staticwebassets\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MaksGym.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },

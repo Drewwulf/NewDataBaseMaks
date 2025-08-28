@@ -105,6 +105,9 @@ namespace MaksGym.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoachId"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
@@ -153,9 +156,6 @@ namespace MaksGym.Migrations
                     b.Property<int>("CoachId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DeletionFlag")
-                        .HasColumnType("bit");
-
                     b.Property<int>("DirectionId")
                         .HasColumnType("int");
 
@@ -165,6 +165,9 @@ namespace MaksGym.Migrations
                     b.Property<string>("GroupName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("GroupsId");
 
@@ -206,6 +209,9 @@ namespace MaksGym.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudentId"));
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PhotoPath")
                         .HasColumnType("nvarchar(max)");
 
@@ -230,6 +236,9 @@ namespace MaksGym.Migrations
 
                     b.Property<int>("GroupsId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");

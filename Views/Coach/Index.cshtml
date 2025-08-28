@@ -1,0 +1,64 @@
+﻿@model MaksGym.Models.ViewModels.CoachViewModel
+
+@{
+    ViewData["Title"] = "Додати тренера";
+}
+
+<h2>Додати тренера</h2>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="NewCoach.UserId" class="control-label">Користувач</label>
+        <select asp-for="NewCoach.UserId" class="form-control">
+            <option value="">-- Виберіть користувача --</option>
+            @foreach (var user in Model.Users)
+            {
+                <option value="@user.Id">@user.FullName</option>
+            }
+        </select>
+        <span asp-validation-for="NewCoach.UserId" class="text-danger"></span>
+    </div>
+
+
+
+
+
+    <div class="form-group">
+        <label class="control-label">Фото</label>
+        <input type="file" name="PhotoFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Додати</button>
+    <a asp-action="Index" class="btn btn-secondary">Назад</a>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Користувач</th>
+            <th>Фото</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var coach in Model.CoachList)
+        {
+            if (!coach.IsDeleted)
+            {
+                <tr>
+                    <td>@coach.CoachId</td>
+                    <td>@coach.User.FullName</td>
+                    <td><img src="@coach.PhotoPath" alt="Фото тренера" style="width: 100px; height: auto;" /></td>
+                    <td><a asp-action="Delete" asp-route-id="@coach.CoachId">Видалити</a></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

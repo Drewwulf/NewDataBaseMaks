@@ -27,22 +27,21 @@ namespace MaksGym.Controllers
             {
                 var user = new ApplicationUser
                 {
-                    UserName = model.PhoneNumber,          // логін = телефон
+                    UserName = model.PhoneNumber,        
                     PhoneNumber = model.PhoneNumber,
                     FullName = model.FullName,
                     DateOfBirth = model.DateOfBirth,
-                    Email = $"{model.PhoneNumber}@example.com" // ⚡ підставний Email
+                    Email = $"{model.PhoneNumber}@example.com"
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    // Додаємо роль "Student"
                     await _userManager.AddToRoleAsync(user, "Student");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Profile");
                 }
 
                 foreach (var error in result.Errors)
@@ -58,13 +57,14 @@ namespace MaksGym.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string phoneNumber, string password)
         {
-            var user = await _userManager.FindByNameAsync(phoneNumber); // ⚡ пошук по телефону
+            var user = await _userManager.FindByNameAsync(phoneNumber); 
 
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, password, false, false);
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                    
+                    return RedirectToAction("Index", "Profile");
             }
 
             ModelState.AddModelError("", "Невірний номер телефону або пароль");

@@ -14,7 +14,7 @@ namespace MaksGym.Data
         public DbSet<StudentToGroup> StudentToGroups => Set<StudentToGroup>();
         public DbSet<Direction> Directions => Set<Direction>();
         public DbSet<Room> Rooms => Set<Room>();
-        public DbSet<Shedule> Shedules => Set<Shedule>();
+        public DbSet<Schedule> Shedules => Set<Schedule>();
 
         // Нові сутності
         public DbSet<Subscription> Subscriptions => Set<Subscription>();
@@ -85,7 +85,7 @@ namespace MaksGym.Data
             });
 
             // Shedules
-            b.Entity<Shedule>(e =>
+            b.Entity<Schedule>(e =>
             {
                 e.ToTable("Shedules");
                 e.HasKey(x => x.SheduleId);
