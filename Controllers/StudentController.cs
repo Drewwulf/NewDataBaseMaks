@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MaksGym.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MaksGym.Models.ViewModels;
+using System.Threading.Tasks;
 
 [Authorize(Roles = "Admin")]
 public class StudentController : Controller
@@ -108,4 +109,52 @@ public class StudentController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var student = _context.Students
+            .Include(s => s.User).Include(ss=>ss.StudentsToSubscriptions)
+            .FirstOrDefault(s => s.StudentId == id);
+        var model = new StudentDetailsViewModel
+        {
+            NewStudent = student,
+            Subscriptions = await _context.Subscriptions.ToListAsync(),
+            
+
+        };
+        return View(model);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddSubscription(StudentDetailsViewModel studentDetailsViewModel)
+    {
+        var student = await _context.Students
+            .Include(s => s.StudentsToSubscriptions).Where(s => !s.IsDeleted)
+            .FirstOrDefaultAsync(s => s.StudentId == studentDetailsViewModel.NewStudent.StudentId);
+        if (student == null)
+        {
+            return NotFound("Студент не знайдений");
+        }
+        var subscription = await _context.Subscriptions.FindAsync(studentDetailsViewModel.SubscriptionId);
+        if (subscription == null)
+        {
+            return NotFound("Абонемент не знайдений");
+        }
+        var studentSubscription = new StudentsToSubscription
+        {
+            StudentId = studentDetailsViewModel.NewStudent.StudentId,
+            SubscriptionId = studentDetailsViewModel.SubscriptionId,
+            StartDate = DateTime.Now,
+            EndDate = DateTime.FromOADate(DateTime.Now.ToOADate() + 30)
+
+        };
+        if (studentSubscription == null)
+        { return BadRequest("Не вдалося створити зв'язок студент-абонемент");
+        }
+        _context.StudentsToSubscriptions.Add(studentSubscription);
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = studentDetailsViewModel.NewStudent.StudentId });
+    }
+
 }

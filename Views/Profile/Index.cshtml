@@ -1,172 +1,132 @@
-﻿@model MaksGym.Models.ViewModels.ProfileViewModel                              
+﻿@model MaksGym.Models.ViewModels.ProfileViewModel
 @{
     ViewData["Title"] = "Дашборд";
 }
 
-<style>
-    .dash-wrap {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    grid-template-rows: auto auto auto 180px 1fr 1fr;
-    grid-template-areas:
-    "title   title"
-    "name    name"
-    "group   group"
-    "avatar  status"
-    "avatar  term"
-    "links   news";
-    gap: 14px;
-    max-width: 1100px;
-    margin: 0 auto;
-    }
+<div class="container my-4">
+    <div class="row g-3">
+        <div class="col-12">
+            <div class="card shadow-sm text-center p-3">
+                <h2 class="fw-bold mb-0">Твої напрямки</h2>
+                <ul class="list-inline mt-2">
+                    @if (Model.groups != null)
+                    {
+                        @foreach (var group in Model.groups)
+                        {
+                            <li class="list-inline-item badge bg-primary fs-6">
+                                @(group.Direction?.DirectionName ?? "-")
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
 
-    .card {
-    border: 2px solid #111;
-    border-radius: 8px;
-    padding: 18px;
-    white-space: pre-wrap;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 80px;
-    }
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3 text-center">
+                <h5 class="fw-bold text-muted">Ім'я користувача</h5>
+                <p class="fs-5 mb-0">@Model.UserName</p>
+            </div>
+        </div>
 
-    .title {
-    grid-area: title;
-    font-size: 30px;
-    border: none;
-    padding: 0;
-    text-align: center;
-    }
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3 text-center">
+                <h5 class="fw-bold text-muted">Мої групи</h5>
+                <ul class="list-group list-group-flush">
+                    @if (Model.groups != null)
+                    {
+                        @foreach (var group in Model.groups)
+                        {
+                            <li class="list-group-item">@group.GroupName</li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
 
-    .name {
-    grid-area: name;
-    font-size: 22px;
-    }
-
-    .group {
-    grid-area: group;
-    font-size: 22px;
-    }
-
-    .avatar {
-    grid-area: avatar;
-    min-height: 380px;
-    background: linear-gradient(#eef7fd, #eef7fd 55%, #dfe7c6 55%, #dfe7c6);
-    }
-
-    .status {
-    grid-area: status;
-    }
-
-    .term {
-    grid-area: term;
-    }
-
-    .links {
-    grid-area: links;
-    min-height: 300px;
-    }
-
-    .news {
-    grid-area: news;
-    min-height: 300px;
-    }
-
-    /* --- Адаптив --- */
-    @@media (max-width: 768px) {
-    .dash-wrap
-
-    {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-    "title"
-    "name"
-    "group"
-    "avatar"
-    "status"
-    "term"
-    "links"
-    "news";
-    }
-
-    .title {
-    text-align: center;
-    font-size: 24px;
-    }
-
-    .avatar {
-    min-height: 220px;
-    }
-
-    .links, .news {
-    min-height: 200px;
-    }
-
-    }
-</style>
-
-<div class="dash-wrap">
-    <div class="title">
-        <ul>
-            @foreach (var direction in Model.Directions)
-            {
-                <li>@direction</li>
-            }
-        </ul>
-    </div>
-
-    <div class="card name">@Model.UserName</div>
-    <div class="card group">
-
-        <ul>
-            @foreach(var group in Model.Groups)
-            {
-                <li>@group</li>
-            }
-        </ul>
-    </div>
-
-    <div class="card avatar">АВАТАР</div>
-
-    <div class="card status">СТАТУС АБОНЕМЕНТА</div>
-
-    <div class="card term">ТЕРМІН ДІЇ</div>
-
-    <div class="card links">КОРИСНІ ПОСИЛАННЯ</div>
-
-    <div class="card news">НОВИНИ<br />АБО<br />РЕКЛАМА</div>
-</div>
-<div>
-
-    <h2>Твій графік занять</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Група</th>
-                <th>День</th>
-                <th>Час</th>
-                <th>Напрямок</th>
-                <th>Тренер</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var group in Model.groups)
-            {
-                @foreach (var schedule in group.Shedules)
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 text-center" style="min-height: 300px; background: linear-gradient(#eef7fd, #eef7fd 55%, #dfe7c6 55%, #dfe7c6);">
+                @if (string.IsNullOrEmpty(Model.PhotoUrl))
                 {
-                    <tr>
-                        <td>@group.GroupName</td>
-                        <td>@schedule.DayOfWeek</td>
-                        <td>@schedule.StartTime - @schedule.EndTime</td>
-                        <td>@group.Direction.DirectionName</td>
-                        <td>@group.Coach.User.FullName</td>
-                    </tr>
+                    <img src="https://cdn-icons-png.flaticon.com/512/10/10938.png" class="img-fluid" />
                 }
-            }
-        </tbody>
-    </table>
+                else
+                {
+                    <img src="@Model.PhotoUrl" class="img-fluid" />
+                }
+            </div>
+        </div>
 
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center">
+                <span class="fs-5 fw-bold">СТАТУС АБОНЕМЕНТА</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm p-4 text-center">
+                <span class="fs-5 fw-bold">ТЕРМІН ДІЇ</span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 text-center">
+                <h5 class="fw-bold text-muted">КОРИСНІ ПОСИЛАННЯ</h5>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4 text-center">
+                <h5 class="fw-bold">НОВИНИ / РЕКЛАМА</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h3 class="fw-bold text-center mb-3">Твій графік занять</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle shadow-sm">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Група</th>
+                        <th>День</th>
+                        <th>Час</th>
+                        <th>Напрямок</th>
+                        <th>Тренер</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.groups != null)
+                    {
+                        @foreach (var group in Model.groups)
+                        {
+                            <tr>
+                                <td class="text-center">@group.GroupName</td>
+                                <td>
+                                    @if (group.Shedules != null)
+                                    {
+                                        @foreach (var shedule in group.Shedules)
+                                        {
+                                            <div>@shedule.DayOfWeek</div>
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @if (group.Shedules != null)
+                                    {
+                                        @foreach (var shedule in group.Shedules)
+                                        {
+                                            <div>@shedule.StartTime - @shedule.EndTime</div>
+                                        }
+                                    }
+                                </td>
+                                <td class="text-center">@group.Direction?.DirectionName ?? "-"</td>
+                                <td class="text-center">@group.Coach?.User?.FullName ?? "-"</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

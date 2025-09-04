@@ -43,32 +43,28 @@ namespace MaksGym.Controllers
             else
             {
                 var student = await _context.Students
-          .Include(s => s.User)
-          .FirstOrDefaultAsync(s => s.UserId == userId);
+       .FirstOrDefaultAsync(s => s.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                if (student == null)
+                {
+                    return NotFound("Студент не знайдений");
+                }
 
 
-                var groupsWithDirections = await _context.StudentToGroups
-         .Where(stg => stg.Student.UserId == userId && !stg.IsDeleted && !stg.Group.IsDeleted)
-         .Select(stg => new
-         {
-             GroupName = stg.Group.GroupName,
-             DirectionName = stg.Group.Direction.DirectionName
-         })
-         .ToListAsync();
+                var groups = await _context.Groups
+     .Where(g => _context.StudentToGroups
+         .Any(sg => sg.StudentId == student.StudentId && sg.GroupsId == g.GroupsId))
+     .Include(g => g.Direction)
+     .Include(g => g.Coach).ThenInclude(c => c.User)
+     .Include(g => g.Shedules)
+     .ToListAsync();
+
 
                 var model = new ProfileViewModel
                 {
                     UserName = User.Identity!.Name!,
-                    Groups = groupsWithDirections.Select(g => g.GroupName).ToList(),
-                    Directions = groupsWithDirections.Select(g => g.DirectionName).Distinct().ToList()
-                    ,
-                    groups = await _context.Groups
-                    .Include(sh => sh.Shedules)
-                        .Include(g => g.Direction)
-                        .Include(g => g.Coach)
-                        .ThenInclude(c => c.User)
-                        .Where(g => !g.IsDeleted)
-                        .ToListAsync()
+                    groups = groups,
+                    PhotoUrl = student?.PhotoPath,
                 };
 
                 return View(model);

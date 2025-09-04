@@ -16,8 +16,8 @@ namespace MaksGym.Models
         public int? TransactionId { get; set; }           // FK -> Transaction.TransactionId (nullable)
         public Transaction? Transaction { get; set; }
 
-        public DateOnly StartDate { get; set; }           // date
-
+        public DateTime StartDate { get; set; }           // date
+        public DateTime EndDate { get; set; }             // date
         public ICollection<SubscriptionFreezeTime> Freezes { get; set; }
      = new List<SubscriptionFreezeTime>();
 

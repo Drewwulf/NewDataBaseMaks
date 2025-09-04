@@ -43,9 +43,17 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Coach" asp-action="Index">Тренера</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link text-light">Вийти</button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
+
     </header>
 
     <div class="container">
