@@ -1,11 +1,13 @@
 ﻿using MaksGym.Data;
 using MaksGym.Models;
 using MaksGym.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace MaksGym.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SubscriptionController : Controller
     {
         private readonly ApplicationDbContext _context;

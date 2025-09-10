@@ -2,9 +2,9 @@
 {
     public class Group
     {
-        public int GroupsId { get; set; }           // PK
-        public int CoachId { get; set; }            // FK -> Coaches.CoachId
-        public int DirectionId { get; set; }        // FK -> Directions.DirectionId
+        public int GroupsId { get; set; }         
+        public int CoachId { get; set; }         
+        public int DirectionId { get; set; }      
         public bool IsDeleted { get; set; } = false;
         public string GroupName { get; set; } = null!;
         public string? GroupDescription { get; set; }

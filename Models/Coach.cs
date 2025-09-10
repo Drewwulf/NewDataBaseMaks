@@ -9,7 +9,7 @@ namespace MaksGym.Models
         public int CoachId { get; set; }
 
         [Required(ErrorMessage = "Вкажіть користувача")]
-        public string UserId { get; set; } = null!; // FK -> AspNetUsers.Id
+        public string UserId { get; set; } = null!;
 
         public string? PhotoPath { get; set; }
 

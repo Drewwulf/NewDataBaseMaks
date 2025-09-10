@@ -5,7 +5,7 @@ namespace MaksGym.Models
     [Table("Directions")]
     public class Direction
     {
-        public int DirectionId { get; set; }                 // PK
+        public int DirectionId { get; set; }             
         public string DirectionName { get; set; } = null!;
         public string? DirectionDescription { get; set; }
         public bool isDeleted { get; set; } = false;

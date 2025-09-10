@@ -130,31 +130,34 @@ public class StudentController : Controller
     public async Task<IActionResult> AddSubscription(StudentDetailsViewModel studentDetailsViewModel)
     {
         var student = await _context.Students
-            .Include(s => s.StudentsToSubscriptions).Where(s => !s.IsDeleted)
+            .Include(s => s.StudentsToSubscriptions)
+            .Where(s => !s.IsDeleted)
             .FirstOrDefaultAsync(s => s.StudentId == studentDetailsViewModel.NewStudent.StudentId);
+
         if (student == null)
         {
             return NotFound("Студент не знайдений");
         }
+
         var subscription = await _context.Subscriptions.FindAsync(studentDetailsViewModel.SubscriptionId);
         if (subscription == null)
         {
             return NotFound("Абонемент не знайдений");
         }
+
         var studentSubscription = new StudentsToSubscription
         {
-            StudentId = studentDetailsViewModel.NewStudent.StudentId,
-            SubscriptionId = studentDetailsViewModel.SubscriptionId,
+            StudentId = student.StudentId,
+            SubscriptionId = subscription.SubscriptionId,
             StartDate = DateTime.Now,
-            EndDate = DateTime.FromOADate(DateTime.Now.ToOADate() + 30)
-
+            EndDate = DateTime.Now.AddDays(30)
         };
-        if (studentSubscription == null)
-        { return BadRequest("Не вдалося створити зв'язок студент-абонемент");
-        }
+
         _context.StudentsToSubscriptions.Add(studentSubscription);
         await _context.SaveChangesAsync();
-        return RedirectToAction("Details", new { id = studentDetailsViewModel.NewStudent.StudentId });
+
+        return RedirectToAction("Details", new { id = student.StudentId });
     }
+
 
 }

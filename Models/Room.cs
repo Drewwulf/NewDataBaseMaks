@@ -7,7 +7,6 @@ namespace MaksGym.Models
     public class Room
     {
         public int RoomId { get; set; }   
-        // PK
     [Display(Name = "Введіть назву кімнати")]
         [Required(ErrorMessage ="Введення назви кімнати є обовязкове")]
         public string RoomName { get; set; } = null!;

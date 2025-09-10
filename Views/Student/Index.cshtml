@@ -9,7 +9,7 @@
         <div class="col-lg-6 col-md-8 col-sm-12">
             <div class="card shadow-lg border-0 rounded-3">
                 <div class="card-header bg-primary text-white text-center">
-                    <h3 class="mb-0">Додати тренера</h3>
+                    <h3 class="mb-0">Додати студента</h3>
                 </div>
                 <div class="card-body p-4">
                     <form asp-action="Create" enctype="multipart/form-data" method="post">
@@ -36,7 +36,7 @@
                             <button type="submit" class="btn btn-success px-4">
                                 <i class="bi bi-plus-circle"></i> Додати
                             </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary px-4">
                                 <i class="bi bi-arrow-left"></i> Назад
                             </a>
                         </div>
@@ -48,7 +48,7 @@
 
     <div class="row mt-5 mb-3">
         <div class="col-md-6">
-            <input type="text" id="searchInput" class="form-control" placeholder="Пошук тренера..." />
+            <input type="text" id="searchInput" class="form-control" placeholder="Пошук студента..." />
         </div>
     </div>
 
@@ -56,7 +56,7 @@
         <div class="col-12">
             <div class="card shadow-sm border-0 rounded-3">
                 <div class="card-header bg-light">
-                    <h4 class="mb-0">Список тренерів</h4>
+                    <h4 class="mb-0">Список студентів</h4>
                 </div>
                 <div class="card-body p-3">
                     <div class="table-responsive">
@@ -78,7 +78,7 @@
                                             <td>@student.StudentId</td>
                                             <td>@student.User.FullName</td>
                                             <td>
-                                                <img src="@student.PhotoPath" alt="Фото тренера"
+                                                <img src="@student.PhotoPath" alt="Фото студента"
                                                      class="rounded-circle shadow-sm"
                                                      style="width: 80px; height: 80px; object-fit: cover;" />
                                             </td>

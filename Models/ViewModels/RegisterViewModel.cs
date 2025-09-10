@@ -5,6 +5,7 @@ namespace MaksGym.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+        public List<ApplicationUser> Users { get; set; } = new();
         [Required(ErrorMessage = "Вкажіть номер телефону")]
         [Phone(ErrorMessage = "Некоректний формат номера телефону")]
         [Display(Name = "Номер телефону")]
