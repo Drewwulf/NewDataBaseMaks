@@ -59,13 +59,46 @@
 
         <div class="col-md-3">
             <div class="card shadow-sm p-4 text-center">
-                <span class="fs-5 fw-bold">СТАТУС АБОНЕМЕНТА</span>
+                <h5 class="fw-bold text-muted">Мої абонементи</h5>
+                <ul class="list-group list-group-flush">
+                    @if (Model.subscriptions != null)
+                    {
+                        @foreach (var subscription in Model.subscriptions)
+                        {
+                            <li class="list-group-item">@subscription.Name</li>
+                        }
+                    }
+                </ul>
+
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card shadow-sm p-4 text-center">
-                <span class="fs-5 fw-bold">ТЕРМІН ДІЇ</span>
+                <span class="fs-5 fw-bold">ТЕРМІН ДІЇ ДО</span>
+                <ul class="list-group list-group-flush">
+                    @if (Model.subscriptions != null)
+                    {
+                        @foreach(var studenToSubscription in Model.studentsToSubscriptions)
+                        {
+                            if(studenToSubscription.IsFrozen)
+                            {
+                                <li class="list-group-item text-warning">Заморожено</li>
+                            }
+                            else  if (studenToSubscription.EndDate >= DateTime.Now)
+                            {
+                                <li class="list-group-item">@studenToSubscription.EndDate</li>
+
+                            }
+
+                            else if (studenToSubscription.EndDate < DateTime.Now){
+                                <li class="list-group-item text-success">Неаактвиний з @studenToSubscription.EndDate</li>
+                            }
+                            
+                            }
+                        
+                    }
+                </ul>
             </div>
         </div>
 

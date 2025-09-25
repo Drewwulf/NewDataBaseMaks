@@ -253,8 +253,20 @@
       "PackagePath": "staticwebassets\\uploads\\98fdf2f3-2ff3-4a5c-bfa3-2f10bff70d57.png"
     },
     {
+      "Id": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\b48e6d0e-fe8f-401a-96f4-cbd8b7a0ecd2.png",
+      "PackagePath": "staticwebassets\\uploads\\b48e6d0e-fe8f-401a-96f4-cbd8b7a0ecd2.png"
+    },
+    {
+      "Id": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\de45bc20-891f-40fb-9074-f024c58d2bfb.png",
+      "PackagePath": "staticwebassets\\uploads\\de45bc20-891f-40fb-9074-f024c58d2bfb.png"
+    },
+    {
       "Id": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\f07a6eef-6f87-48f0-906f-66ee0d8cadaf.png",
       "PackagePath": "staticwebassets\\uploads\\f07a6eef-6f87-48f0-906f-66ee0d8cadaf.png"
+    },
+    {
+      "Id": "C:\\Users\\Cobta\\source\\repos\\MaksGym\\MaksGym\\wwwroot\\uploads\\vynogradiv-zr-team.jpg",
+      "PackagePath": "staticwebassets\\uploads\\vynogradiv-zr-team.jpg"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.MaksGym.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

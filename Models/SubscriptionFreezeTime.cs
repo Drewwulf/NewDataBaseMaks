@@ -9,7 +9,7 @@ namespace MaksGym.Models
         public int StudentsToSubscriptionId { get; set; }   // FK -> StudentsToSubscription
         public StudentsToSubscription StudentsToSubscription { get; set; } = null!;
 
-        public DateOnly FreezeStart { get; set; }           // date
-        public DateOnly FreezeEnd { get; set; }             // date
+        public DateTime FreezeStart { get; set; }   
+        public DateTime? FreezeEnd { get; set; }           
     }
 }

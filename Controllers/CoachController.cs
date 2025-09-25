@@ -88,14 +88,13 @@ namespace MaksGym.Controllers
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var coach = _context.Students.Find(id);
+            var coach = await _context.Coaches.FindAsync(id);
             if (coach != null)
             {
                 coach.IsDeleted = true;
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }

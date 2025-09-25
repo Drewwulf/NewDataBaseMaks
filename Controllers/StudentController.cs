@@ -7,6 +7,7 @@ using MaksGym.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MaksGym.Models.ViewModels;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 [Authorize(Roles = "Admin")]
 public class StudentController : Controller
@@ -113,13 +114,25 @@ public class StudentController : Controller
     public async Task<IActionResult> Details(int id)
     {
         var student = _context.Students
-            .Include(s => s.User).Include(ss=>ss.StudentsToSubscriptions)
+            .Include(s => s.User).Include(ss=>ss.StudentsToSubscriptions).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Subscription).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Freezes)
             .FirstOrDefault(s => s.StudentId == id);
+
+
+        
+       
+        if (student == null)
+        {
+            return NotFound("Студент не знайдений");
+        }
+        var hasFrozen = await _context.StudentsToSubscriptions
+            .Include(sts => sts.Freezes)
+            .AnyAsync(sts => sts.StudentId == id && sts.Freezes.Any(f => f.FreezeEnd > DateTime.Now));
         var model = new StudentDetailsViewModel
         {
             NewStudent = student,
-            Subscriptions = await _context.Subscriptions.ToListAsync(),
-            
+            Subscriptions = await _context.Subscriptions.Where(s => !s.IsDeleted).ToListAsync(),
+
+
 
         };
         return View(model);
@@ -157,6 +170,52 @@ public class StudentController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Details", new { id = student.StudentId });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> FrozeSubscription(int studentId,int subscriptionId)
+    {
+        var studentSubsription = await _context.StudentsToSubscriptions.Include(s=>s.Freezes).FirstOrDefaultAsync(sts => sts.StudentId == studentId && sts.SubscriptionId == subscriptionId);
+        if (studentSubsription == null)
+        {
+            return NotFound("Абонемент студента не знайдений");
+        }
+        _context.SubscriptionFreezeTimes.Add(new SubscriptionFreezeTime 
+        {
+            StudentsToSubscriptionId = studentSubsription.StudentsToSubscriptionId,
+            FreezeStart = DateTime.Now,
+            FreezeEnd = null
+        });
+        await _context.SaveChangesAsync();
+        return RedirectToAction("Details", new { id = studentId });
+    }
+    [HttpGet]
+    public async Task<IActionResult> UnfrozeSubscription(int studentId, int subscriptionId)
+    {
+        var studentSubsription = await _context.StudentsToSubscriptions
+            .Include(s => s.Freezes)
+            .FirstOrDefaultAsync(sts => sts.StudentId == studentId && sts.SubscriptionId == subscriptionId);
+       
+        if (studentSubsription == null)
+        {
+            return NotFound("Абонемент студента не знайдений");
+        }
+
+        var currentFreeze = studentSubsription.Freezes
+            .FirstOrDefault(f => f.FreezeEnd == null);
+
+        if (currentFreeze != null)
+        {
+            currentFreeze.FreezeEnd = DateTime.Now;
+
+            var frozenDays = (studentSubsription.EndDate - currentFreeze.FreezeStart).TotalDays;
+
+            studentSubsription.EndDate = DateTime.Now.AddDays(frozenDays);
+
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToAction("Details", new { id = studentId });
     }
 
 

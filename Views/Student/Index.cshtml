@@ -83,13 +83,15 @@
                                                      style="width: 80px; height: 80px; object-fit: cover;" />
                                             </td>
                                             <td class="text-center">
-                                                <a asp-action="Delete" asp-route-id="@student.StudentId"
-                                                   class="btn btn-outline-danger btn-sm">
-                                                    <i class="bi bi-trash"></i> Видалити
-                                                </a>
+                                              
                                                 <a  asp-action="Details" asp-route-id="@student.StudentId"
                                                    class="btn btn-outline-danger btn-sm">
                                                     <i class="bi bi-trash"></i> деталі
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@student.StudentId"
+                                                   class="btn btn-outline-danger btn-sm"
+                                                   onclick="return confirm('Ви впевнені, що хочете видалити цього студента?');">
+                                                    <i class="bi bi-trash"></i> Видалити
                                                 </a>
                                             </td>
                                         </tr>

@@ -14,9 +14,9 @@
             <p><b>Телефон:</b> @Model.NewStudent.User.PhoneNumber</p>
             <p><b>Фото:</b></p>
             <img src="@Model.NewStudent.PhotoPath" alt="Фото студента"
-                 class="rounded shadow-sm"
-                 style="width:150px; height:150px; object-fit:cover;" />
-                 
+            class="rounded shadow-sm"
+            style="width:150px; height:150px; object-fit:cover;" />
+
         </div>
         <form asp-action="AddSubscription">
             <input type="hidden" asp-for="NewStudent.StudentId" />
@@ -26,10 +26,67 @@
                 {
                     <option value="@sub.SubscriptionId">@sub.Name - @sub.Price днів</option>
                 }
-                </select>
+            </select>
             <input type="submit" asp- class="btn btn-success m-3" value="Додати абонемент" />
         </form>
-        
+
+        <table>
+            <thead class="table-light">
+                <tr>
+                    <th>Назва абонемента</th>
+                    <th>Дата початку</th>
+                    <th>Дата закінчення</th>
+                    <th>Статус</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sub in Model.Subscriptions)
+                {
+                    @foreach (var stb in sub.StudentsToSubscriptions)
+                    {
+                        if (sub.SubscriptionId == stb.SubscriptionId)
+                        {
+                            <tr>
+                                <td>@sub.Name</td>
+                                <td>@stb.StartDate.ToString("dd.MM.yyyy")</td>
+                                <td>@stb.EndDate.ToString("dd.MM.yyyy")</td>
+                                @if(stb.IsFrozen)
+                                {
+                                    <td><span class="badge bg-warning text-dark">Заморожений</span></td>
+                                }
+                                else if (stb.EndDate <= DateTime.Now)
+                                {
+                                    <td><span class="badge bg-danger">Неактивний</span></td>
+                                }
+
+                                else
+                                {
+                                    <td><span class="badge bg-success">Активний</span></td>
+                                }
+                                <td>
+                                    @if (stb.IsFrozen)
+                                    {
+                                        <a class="btn-outline-light" asp-action="UnfrozeSubscription" asp-route-studentId="@stb.StudentId"
+                                        asp-route-subscriptionId="@stb.SubscriptionId">
+                                            Розморозити
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn-outline-light" asp-action="FrozeSubscription" asp-route-studentId="@stb.StudentId"
+                                           asp-route-subscriptionId="@stb.SubscriptionId">
+                                            Заморозити
+                                        </a>
+                                    }
+                                   
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 

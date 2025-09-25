@@ -7,6 +7,8 @@
         public List<string> Directions { get; set; } = new();
         public string? PhotoUrl { get; set; }
         public List<Group> groups { get; set; } = new List<Group>();
+        public List<Subscription> subscriptions { get; set; } = new List<Subscription>();
+        public List<StudentsToSubscription> studentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
     }
 
 
