@@ -39,7 +39,7 @@ namespace MaksGym.Controllers
             }
             else if (User.IsInRole("Coach"))
             {
-                return RedirectToAction("Index", "CoachDashboard");
+                return RedirectToAction("Index", "CoachProfile");
             }
             else
             {

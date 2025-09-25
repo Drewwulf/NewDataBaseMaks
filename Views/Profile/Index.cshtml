@@ -153,8 +153,17 @@
                                         }
                                     }
                                 </td>
-                                <td class="text-center">@group.Direction?.DirectionName ?? "-"</td>
-                                <td class="text-center">@group.Coach?.User?.FullName ?? "-"</td>
+                                <td class="text-center">
+                                    @(group.Direction != null
+                                        ? group.Direction.DirectionName
+                                        : "-")
+                                </td>
+                                <td class="text-center">
+                                    @(group.Coach?.User != null
+                                        ? group.Coach.User.FullName
+                                        : "-")
+                                </td>
+
                             </tr>
                         }
                     }

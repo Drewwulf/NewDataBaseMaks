@@ -28,7 +28,7 @@ namespace MaksGym.Controllers
             var model = new SheduleViewModel
             {
                 GroupId = groupId,
-                Rooms = _context.Rooms.ToList()
+                Rooms = _context.Rooms.Where(r => !r.IsDeleted).ToList(),
             };
 
             return View(model);
