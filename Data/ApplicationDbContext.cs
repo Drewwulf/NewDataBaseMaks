@@ -22,6 +22,7 @@ namespace MaksGym.Data
         public DbSet<SubscriptionFreezeTime> SubscriptionFreezeTimes => Set<SubscriptionFreezeTime>();
         public DbSet<Transaction> Transactions => Set<Transaction>();
 
+        public DbSet<Training> Trainings => Set<Training>();
         protected override void OnModelCreating(ModelBuilder b)
         {
             base.OnModelCreating(b);
@@ -76,7 +77,6 @@ namespace MaksGym.Data
                 e.Property(x => x.DirectionName).IsRequired();
             });
 
-            // Rooms
             b.Entity<Room>(e =>
             {
                 e.ToTable("Rooms");
@@ -84,7 +84,7 @@ namespace MaksGym.Data
                 e.Property(x => x.RoomName).IsRequired();
             });
 
-            // Shedules
+
             b.Entity<Schedule>(e =>
             {
                 e.ToTable("Shedules");
@@ -101,7 +101,7 @@ namespace MaksGym.Data
                  .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // StudentToGroup
+
             b.Entity<StudentToGroup>(e =>
             {
                 e.ToTable("StudentToGroup");
@@ -120,7 +120,7 @@ namespace MaksGym.Data
                 e.HasIndex(x => new { x.StudentId, x.GroupsId }).IsUnique();
             });
 
-            // Subscriptions
+
             b.Entity<Subscription>(e =>
             {
                 e.ToTable("Subscriptions");
@@ -129,7 +129,6 @@ namespace MaksGym.Data
                 e.Property(x => x.Price).HasColumnType("decimal(18,2)");
             });
 
-            // StudentsToSubscription
             b.Entity<StudentsToSubscription>(e =>
             {
                 e.ToTable("StudentsToSubscriptions");
@@ -176,6 +175,42 @@ namespace MaksGym.Data
 
                 e.Property(x => x.Value).HasColumnType("decimal(18,2)");
             });
+            b.Entity<Training>(e =>
+            {
+                e.ToTable("Trainings");
+                e.HasKey(x => x.TrainingId);
+
+                e.Property(x => x.StartTime)
+                 .HasColumnType("datetime")
+                 .IsRequired();
+
+             
+                e.HasOne<Student>()
+                 .WithMany()
+                 .HasForeignKey(x => x.StudentId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne<Coach>()
+                 .WithMany()
+                 .HasForeignKey(x => x.CoachId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne<Room>()
+                 .WithMany()
+                 .HasForeignKey(x => x.RoomId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne<Direction>()
+                 .WithMany()
+                 .HasForeignKey(x => x.directionId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                e.HasOne<Subscription>()
+                 .WithMany()
+                 .HasForeignKey(x => x.subscriptionId)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });
         }
+       
     }
 }

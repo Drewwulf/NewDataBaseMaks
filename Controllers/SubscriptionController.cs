@@ -19,6 +19,7 @@ namespace MaksGym.Controllers
 
         public IActionResult Index()
         {
+            
 
             var model = new SubscriptionViewModel
             {
@@ -50,10 +51,12 @@ namespace MaksGym.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
+
             var subscription = await _context.Subscriptions.FindAsync(id);
+    
             if (subscription != null)
             {
-                subscription.IsDeleted = true;
+                _context.Remove(subscription);
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));

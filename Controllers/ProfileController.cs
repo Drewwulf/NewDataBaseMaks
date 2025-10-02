@@ -1,5 +1,6 @@
 ﻿using MaksGym.Data;
 using MaksGym.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,8 @@ using System.Security.Claims;
 
 namespace MaksGym.Controllers
 {
+
+
     public class ProfileController : Controller
     {
         private readonly ApplicationDbContext _context;

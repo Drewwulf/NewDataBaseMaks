@@ -143,7 +143,7 @@ public class StudentController : Controller
     public async Task<IActionResult> AddSubscription(StudentDetailsViewModel studentDetailsViewModel)
     {
         var student = await _context.Students
-            .Include(s => s.StudentsToSubscriptions)
+            .Include(s => s.StudentsToSubscriptions).Include(s => s.User)
             .Where(s => !s.IsDeleted)
             .FirstOrDefaultAsync(s => s.StudentId == studentDetailsViewModel.NewStudent.StudentId);
 
@@ -157,13 +157,24 @@ public class StudentController : Controller
         {
             return NotFound("Абонемент не знайдений");
         }
+        if (student.StudentsToSubscriptions.Any(sts => sts.SubscriptionId == subscription.SubscriptionId && sts.EndDate > DateTime.Now))
+        {
+            ModelState.AddModelError("SubscriptionId", "Цей студент вже має цю підписку");
 
+            var model = new StudentDetailsViewModel
+            {
+                NewStudent = student,
+                Subscriptions = await _context.Subscriptions.Where(s => !s.IsDeleted).ToListAsync()
+            };
+
+            return View("Details", model); 
+        }
         var studentSubscription = new StudentsToSubscription
         {
             StudentId = student.StudentId,
             SubscriptionId = subscription.SubscriptionId,
             StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(30)
+            EndDate = DateTime.Now.AddDays(subscription.DurationInDays)
         };
 
         _context.StudentsToSubscriptions.Add(studentSubscription);

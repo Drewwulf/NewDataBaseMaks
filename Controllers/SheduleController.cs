@@ -1,11 +1,14 @@
 ﻿using MaksGym.Data;
 using MaksGym.Models;
 using MaksGym.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MaksGym.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class SheduleController : Controller
     {
         private readonly ApplicationDbContext _context;

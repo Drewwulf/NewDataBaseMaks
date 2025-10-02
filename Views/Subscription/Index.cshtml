@@ -23,7 +23,12 @@
 
                         <div class="mb-3">
                             <label asp-for="subscription.Price" class="form-label fw-bold"></label>
-                            <input asp-for="subscription.Price" class="form-control" placeholder="Введіть ціну" />
+                            <input asp-for="subscription.Price" class="form-control" placeholder="Введіть ціну за заняття" />
+                            <span asp-validation-for="subscription.Price" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="subscription.DurationInDays" class="form-label fw-bold"></label>
+                            <input asp-for="subscription.DurationInDays" class="form-control" placeholder="Введіть термін дії підписки у днях" />
                             <span asp-validation-for="subscription.Price" class="text-danger"></span>
                         </div>
 

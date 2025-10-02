@@ -2,9 +2,12 @@
 using MaksGym.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MaksGym.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

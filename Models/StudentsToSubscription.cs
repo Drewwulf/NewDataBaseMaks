@@ -13,6 +13,8 @@ namespace MaksGym.Models
         public int SubscriptionId { get; set; }        
         public Subscription Subscription { get; set; } = null!;
 
+        public int ActiveSessions { get; set; }
+
         public int? TransactionId { get; set; }         
         public Transaction? Transaction { get; set; }
 

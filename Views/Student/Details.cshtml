@@ -27,6 +27,7 @@
                     <option value="@sub.SubscriptionId">@sub.Name - @sub.Price днів</option>
                 }
             </select>
+            <span asp-validation-for="SubscriptionId" class="text-danger"></span>
             <input type="submit" asp- class="btn btn-success m-3" value="Додати абонемент" />
         </form>
 
