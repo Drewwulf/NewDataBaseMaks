@@ -31,7 +31,7 @@
                             <label class="form-label fw-bold">Фото</label>
                             <input type="file" name="PhotoFile" class="form-control" />
                         </div>
-
+                     
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-success px-4">
                                 <i class="bi bi-plus-circle"></i> Додати
@@ -41,6 +41,7 @@
                             </a>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -84,14 +85,15 @@
                                             </td>
                                             <td class="text-center">
                                               
-                                                <a  asp-action="Details" asp-route-id="@student.StudentId"
-                                                   class="btn btn-outline-danger btn-sm">
-                                                    <i class="bi bi-trash"></i> деталі
-                                                </a>
+                                               
                                                 <a asp-action="Delete" asp-route-id="@student.StudentId"
                                                    class="btn btn-outline-danger btn-sm"
                                                    onclick="return confirm('Ви впевнені, що хочете видалити цього студента?');">
                                                     <i class="bi bi-trash"></i> Видалити
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@student.StudentId"
+                                                   class="btn btn-outline-info btn-sm">
+                                                    <i class="bi bi-trash"></i> Деталі
                                                 </a>
                                             </td>
                                         </tr>

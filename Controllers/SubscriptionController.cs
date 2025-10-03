@@ -3,6 +3,7 @@ using MaksGym.Models;
 using MaksGym.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace MaksGym.Controllers
@@ -61,6 +62,41 @@ namespace MaksGym.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public async Task<IActionResult> Details(int subscriptionId)
+        {
+            var subscription = _context.Subscriptions.Find(subscriptionId);
+            if (subscription != null)
+            {
+                var model = new SubscriptionDetailViewModels
+                {
+                    CurrentSubscription = subscription
+                };
+
+                return View(model);
+            }
+            return View();
+
+            
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdatePrice(SubscriptionDetailViewModels model)
+        {
+           
+        
+                var subscription = await _context.Subscriptions
+                   .FirstOrDefaultAsync(s => s.SubscriptionId == model.CurrentSubscription.SubscriptionId);
+
+                if (subscription != null)
+                {
+                    subscription.Price = model.CurrentSubscription.Price;
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { subscriptionId = subscription.SubscriptionId });
+                }
+            
+            return View("Details", new { subscriptionId = model.CurrentSubscription.SubscriptionId });
+        }
+
 
     }
 }

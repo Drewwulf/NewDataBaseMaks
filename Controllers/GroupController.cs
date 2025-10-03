@@ -109,27 +109,28 @@ namespace MaksGym.Controllers
                     .Where(sg => sg.GroupsId == id)
                     .ToListAsync(),
                 GroupId = id,
-                NewGroup = await _context.Groups
+                NewGroup = await _context.Groups.Include(r=>r.StudentToGroups)
+                .Include(g => g.Shedules).ThenInclude(s => s.Room)
                     .Include(g => g.Coach)
                     .ThenInclude(c => c.User)
                     .Include(g => g.Direction)
                     .FirstOrDefaultAsync(g => g.GroupsId == id) ?? new Group()
 
             };
-           
+
             return View(group);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddStudent(StudentsInGroupViewModel students)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-               _context.StudentToGroups.Add(new StudentToGroup
-               {
-                   StudentId = students.UserId.Value,
-                   GroupsId = students.GroupId
-               });
+                _context.StudentToGroups.Add(new StudentToGroup
+                {
+                    StudentId = students.UserId.Value,
+                    GroupsId = students.GroupId
+                });
                 await _context.SaveChangesAsync();
             }
 
@@ -145,14 +146,14 @@ namespace MaksGym.Controllers
                        .Where(sg => sg.GroupsId == students.GroupId)
                        .ToListAsync(),
                 GroupId = students.GroupId,
-                NewGroup = await _context.Groups
+                NewGroup = await _context.Groups.Include(g => g.Shedules)
                        .Include(g => g.Coach)
                        .ThenInclude(c => c.User)
                        .Include(g => g.Direction)
                        .FirstOrDefaultAsync(g => g.GroupsId == students.GroupId) ?? new Group()
 
             };
-            return View("Details",group);
+            return View("Details", group);
         }
     }
 }

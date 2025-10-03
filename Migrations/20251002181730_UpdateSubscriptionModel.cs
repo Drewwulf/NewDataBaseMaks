@@ -19,6 +19,15 @@ namespace MaksGym.Migrations
                 nullable: false,
                 defaultValue: 0);
 
+            migrationBuilder.AddColumn<bool>
+                (
+                name: "IsDeleted",
+                table: "StudentsToSubscriptions",
+                type: "boolean",
+                nullable: false,
+                defaultValue: false
+                );
+
             migrationBuilder.AddColumn<int>(
                 name: "ActiveSessions",
                 table: "StudentsToSubscriptions",

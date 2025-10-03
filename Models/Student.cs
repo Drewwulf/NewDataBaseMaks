@@ -14,7 +14,7 @@ namespace MaksGym.Models
         public decimal Balance { get; set; } = 0;
         public ApplicationUser? User { get; set; } = null!;
         public bool IsDeleted { get; set; } = false;
-        public float discount { get; set; } 
+        public float discount { get; set; } = 0; 
         public ICollection<StudentToGroup> StudentToGroups { get; set; } = new List<StudentToGroup>();
         public ICollection<StudentsToSubscription> StudentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();

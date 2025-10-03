@@ -114,12 +114,12 @@ public class StudentController : Controller
     public async Task<IActionResult> Details(int id)
     {
         var student = _context.Students
-            .Include(s => s.User).Include(ss=>ss.StudentsToSubscriptions).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Subscription).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Freezes)
+            .Include(s => s.User).Include(ss => ss.StudentsToSubscriptions).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Subscription).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Freezes)
             .FirstOrDefault(s => s.StudentId == id);
 
 
-        
-       
+
+
         if (student == null)
         {
             return NotFound("Студент не знайдений");
@@ -167,7 +167,7 @@ public class StudentController : Controller
                 Subscriptions = await _context.Subscriptions.Where(s => !s.IsDeleted).ToListAsync()
             };
 
-            return View("Details", model); 
+            return View("Details", model);
         }
         var studentSubscription = new StudentsToSubscription
         {
@@ -184,14 +184,14 @@ public class StudentController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> FrozeSubscription(int studentId,int subscriptionId)
+    public async Task<IActionResult> FrozeSubscription(int studentId, int subscriptionId)
     {
-        var studentSubsription = await _context.StudentsToSubscriptions.Include(s=>s.Freezes).FirstOrDefaultAsync(sts => sts.StudentId == studentId && sts.SubscriptionId == subscriptionId);
+        var studentSubsription = await _context.StudentsToSubscriptions.Include(s => s.Freezes).FirstOrDefaultAsync(sts => sts.StudentId == studentId && sts.SubscriptionId == subscriptionId);
         if (studentSubsription == null)
         {
             return NotFound("Абонемент студента не знайдений");
         }
-        _context.SubscriptionFreezeTimes.Add(new SubscriptionFreezeTime 
+        _context.SubscriptionFreezeTimes.Add(new SubscriptionFreezeTime
         {
             StudentsToSubscriptionId = studentSubsription.StudentsToSubscriptionId,
             FreezeStart = DateTime.Now,
@@ -206,7 +206,7 @@ public class StudentController : Controller
         var studentSubsription = await _context.StudentsToSubscriptions
             .Include(s => s.Freezes)
             .FirstOrDefaultAsync(sts => sts.StudentId == studentId && sts.SubscriptionId == subscriptionId);
-       
+
         if (studentSubsription == null)
         {
             return NotFound("Абонемент студента не знайдений");
@@ -229,5 +229,53 @@ public class StudentController : Controller
         return RedirectToAction("Details", new { id = studentId });
     }
 
+    [HttpGet]
+    public async Task<IActionResult> StudentSubscriptionDetails(int studentId, int subscriptionId)
 
+
+    {
+        var student = await _context.Students.Where(s => s.StudentId == studentId).FirstOrDefaultAsync();
+        var subscription = await _context.Subscriptions.Where(s => s.SubscriptionId == subscriptionId).FirstOrDefaultAsync();
+        var currentSubsctuptuon = await _context.StudentsToSubscriptions.Where(s => s.SubscriptionId == subscriptionId && s.StudentId == studentId).FirstOrDefaultAsync();
+        if (subscription == null || student == null || currentSubsctuptuon == null)
+        {
+            return NotFound();
+        }
+        var studentSub = await _context.StudentsToSubscriptions
+    .Where(s => s.StudentId == studentId && s.SubscriptionId == subscriptionId)
+    .OrderByDescending(s => s.StartDate) 
+    .FirstOrDefaultAsync();
+
+        if (studentSub != null)
+        {
+            var subscriptionAtThatTime = await _context.Subscriptions
+                .TemporalAsOf(studentSub.StartDate)
+                .Where(s => s.SubscriptionId == subscriptionId)
+                .FirstOrDefaultAsync();
+        }
+        var model = new SubscriptionStudentDetailsViewModel
+        {
+            CurrentStudent = student,
+            CurrentSubscription = subscription,
+            CurrentStudentsToSubscription = currentSubsctuptuon
+        };
+
+        return View(model);
+    }
+    [HttpPost]
+    public async Task<IActionResult> ExtendSubscription(SubscriptionStudentDetailsViewModel subscriptionDetails)
+    {
+
+        var cSub = _context.StudentsToSubscriptions.Find(subscriptionDetails.CurrentStudentsToSubscription.StudentsToSubscriptionId);
+        cSub.ActiveSessions += subscriptionDetails.CurrentStudentsToSubscription.ActiveSessions;
+        _context.SaveChanges();
+        return RedirectToAction("StudentSubscriptionDetails", new { studentId = subscriptionDetails.CurrentStudentsToSubscription.StudentId, subscriptionId = subscriptionDetails.CurrentStudentsToSubscription.SubscriptionId });
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddBalance(StudentViewModel student)
+    {
+        
+        return RedirectToAction("Details");
+    }
 }

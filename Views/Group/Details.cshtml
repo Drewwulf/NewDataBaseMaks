@@ -21,7 +21,37 @@
                 </a>
             </div>
         </div>
+
+        <div class="card shadow-sm border-0 rounded-3 mb-4">
+
+            <h2>Графік групи</h2>
+            <table>
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">День тижня</th>
+                        <th scope="col">Час початку</th>
+                        <th scope="col">Час завершення</th>
+                        <th scope="col">Приміщення</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var schedule in Model.NewGroup.Shedules)
+                    {
+                        if (!schedule.IsDeleted)
+                        {
+                            <tr>
+                                <td>@schedule.DayOfWeek</td>
+                                <td>@schedule.StartTime.ToString(@"hh\:mm")</td>
+                                <td>@schedule.EndTime.ToString(@"hh\:mm")</td>
+                                <td>@(schedule.Room?.RoomName ?? "Немає приміщення")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
+    
 
     @if (TempData["ErrorMessage"] != null)
     {
@@ -31,6 +61,7 @@
     {
         <div class="alert alert-success">@TempData["SuccessMessage"]</div>
     }
+    
 
     <div class="card shadow-sm border-0 rounded-3 mb-4">
         <div class="card-header bg-light">

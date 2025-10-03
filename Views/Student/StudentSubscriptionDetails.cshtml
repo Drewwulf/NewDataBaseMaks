@@ -1,0 +1,30 @@
+﻿@model MaksGym.Models.ViewModels.SubscriptionStudentDetailsViewModel
+
+@{
+    ViewData["Title"] = "Деталі підписки студента";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Деталі підписки студента</h3>
+        </div>
+        <div class="card-body">
+            <h5><b>Назва абонемента:</b> @Model.CurrentSubscription.Name</h5>
+            <p><b>Ціна:</b> @Model.CurrentSubscription.Price</p>
+            <p><b>Залишилося </b> @Model.CurrentStudentsToSubscription.ActiveSessions <b>днів</b></p>
+
+            <form asp-controller="Student" asp-action="ExtendSubscription" class="mt-3">
+                <input type="hidden" asp-for="CurrentStudentsToSubscription.StudentsToSubscriptionId" />
+                <input type="hidden" asp-for="CurrentStudentsToSubscription.StudentId" />
+                <input type="hidden" asp-for="CurrentStudentsToSubscription.SubscriptionId" />
+                <div class="mb-3">
+                    <label asp-for="CurrentStudentsToSubscription.ActiveSessions" class="form-label fw-bold"></label>
+                    <input asp-for="CurrentStudentsToSubscription.ActiveSessions" class="form-control" placeholder="Введіть кількість занять" />
+                    <span asp-validation-for="CurrentStudentsToSubscription.ActiveSessions" class="text-danger"></span>
+                </div>
+                <input type="submit" class="btn btn-success" value="Продовжити" />
+            </form>
+        </div>
+    </div>
+</div>

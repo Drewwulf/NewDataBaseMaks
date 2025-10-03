@@ -85,6 +85,10 @@
                                                    onclick="return confirm('Ви впевнені, що хочете видалити цей абонемент?');">
                                                     <i class="bi bi-trash"></i> Видалити
                                                 </a>
+                                                <a asp-action="Details" asp-route-subscriptionId="@subscription.SubscriptionId"
+                                                class="btn btn-outline-info">
+                                                    <i class="bi bi-arrow-left"></i> Деталі
+                                                </a>
                                             </td>
                                         </tr>
                                     }

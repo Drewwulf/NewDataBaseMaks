@@ -1,0 +1,33 @@
+﻿@model MaksGym.Models.ViewModels.SubscriptionDetailViewModels
+
+@{
+    ViewData["Title"] = "Деталі підписки";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Деталі підписки</h3>
+        </div>
+        <div class="card-body">
+            <h5><b>Назва абонементу:</b> @Model.CurrentSubscription.Name</h5>
+            <p><b>Термін дії підписки:</b> @Model.CurrentSubscription.DurationInDays днів</p>
+            <p><b>Ціна за одне заняття:</b> @Model.CurrentSubscription.Price</p>
+
+            <hr />
+
+            <h5 class="mt-3">Змінити ціну за заняття</h5>
+            <form asp-action="UpdatePrice" method="post" class="mt-2">
+                <input type="hidden" asp-for="CurrentSubscription.SubscriptionId" />
+                
+                <div class="mb-3">
+                    <label asp-for="CurrentSubscription.Price" class="form-label fw-bold">Нова ціна</label>
+                    <input asp-for="CurrentSubscription.Price" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="CurrentSubscription.Price" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">Зберегти</button>
+            </form>
+        </div>
+    </div>
+</div>

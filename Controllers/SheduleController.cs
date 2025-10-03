@@ -67,7 +67,8 @@ namespace MaksGym.Controllers
                 RoomId = model.RoomId,
                 DayOfWeek = model.DayOfWeek,
                 StartTime = model.StartTime,
-                EndTime = model.EndTime
+                EndTime = model.EndTime,
+                IsDeleted = false
             };
 
             _context.Shedules.Add(schedule);
