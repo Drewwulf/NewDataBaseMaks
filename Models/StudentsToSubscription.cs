@@ -18,7 +18,7 @@ namespace MaksGym.Models
         public int? TransactionId { get; set; }
         public Transaction? Transaction { get; set; }
         public bool IsDeleted { get; set; } =false;
-
+        public int GroupId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public ICollection<SubscriptionFreezeTime> Freezes { get; set; }

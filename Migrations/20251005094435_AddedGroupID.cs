@@ -5,31 +5,25 @@
 namespace MaksGym.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedIsDeletedToShedule : Migration
+    public partial class AddedGroupID : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsDeleted",
-                table: "Shedules",
-                type: "bit",
-                nullable: false,
-                defaultValue: false);
             migrationBuilder.AddColumn<int>(
                 name: "GroupId",
                 table: "StudentsToSubscriptions",
-                type: "bit",
+                type: "int",
                 nullable: false,
-                defaultValue: null);
+                defaultValue: 0);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "Shedules");
+                name: "GroupId",
+                table: "StudentsToSubscriptions");
         }
     }
 }

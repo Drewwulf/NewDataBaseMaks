@@ -133,7 +133,6 @@ namespace MaksGym.Controllers
                 });
                 await _context.SaveChangesAsync();
             }
-
             var group = new StudentsInGroupViewModel
             {
                 Students = await _context.Students

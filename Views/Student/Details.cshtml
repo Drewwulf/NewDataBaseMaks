@@ -14,31 +14,45 @@
             <p><b>Телефон:</b> @Model.NewStudent.User.PhoneNumber</p>
             <p><b>Фото:</b></p>
             <img src="@Model.NewStudent.PhotoPath" alt="Фото студента"
-            class="rounded shadow-sm"
-            style="width:150px; height:150px; object-fit:cover;" />
-            <p><b>Баланс:</b>@Model.NewStudent.Balance</p>
-            <form asp-action="AddBalance">
-                <input type="hidden" asp-for="NewStudent.StudentId" />
+                 class="rounded shadow-sm"
+                 style="width:150px; height:150px; object-fit:cover;" />
+            <p><b>Баланс:</b> @Model.NewStudent.Balance</p>
 
-                <input asp-for="NewStudent.Balance" type="number" />
-                <input type="submit" asp-class="btn btn-success m-3" />
+            <form asp-action="AddBalance" class="mb-3">
+                <input type="hidden" asp-for="NewStudent.StudentId" />
+                <input asp-for="NewStudent.Balance" type="number" class="form-control mb-2" />
+                <input type="submit" class="btn btn-success" value="Додати баланс" />
             </form>
         </div>
-        <form asp-action="AddSubscription">
+
+        <form asp-action="AddSubscription" class="mb-4">
             <input type="hidden" asp-for="NewStudent.StudentId" />
-            <select asp-for="SubscriptionId" class="form-select m-3">
+
+            <select asp-for="SubscriptionId" class="form-select mb-2">
                 <option value="">-- Виберіть абонемент --</option>
                 @foreach (var sub in Model.Subscriptions)
                 {
                     <option value="@sub.SubscriptionId">@sub.Name - @sub.Price днів</option>
                 }
             </select>
-            <input type="submit" asp-class="btn btn-success m-3" value="Додати абонемент" />
             <span asp-validation-for="SubscriptionId" class="text-danger"></span>
 
+            <select asp-for="GroupId" class="form-select mb-2">
+                <option value="">-- Виберіть групу --</option>
+                @foreach (var group in Model.StudentGroup)
+                {
+                    <option value="@group.GroupsId">@group.GroupName</option>
+                }
+            </select>
+            <label asp-for="DaysToPay">Кількість занять для оплати</label>
+            <input type="number" asp-for="DaysToPay" class="form-control mb-2" min="1" placeholder="Кількість занять для оплати" />
+            <span asp-validation-for="DaysToPay" class="text-danger"></span>
+
+            <input type="submit" class="btn btn-primary mt-2" value="Додати абонемент" />
         </form>
 
-        <table>
+
+        <table class="table">
             <thead class="table-light">
                 <tr>
                     <th>Назва абонемента</th>
@@ -59,40 +73,44 @@
                                 <td>@sub.Name</td>
                                 <td>@stb.StartDate.ToString("dd.MM.yyyy")</td>
                                 <td>@stb.EndDate.ToString("dd.MM.yyyy")</td>
-                                @if(stb.IsFrozen)
-                                {
-                                    <td><span class="badge bg-warning text-dark">Заморожений</span></td>
-                                }
-                                else if (stb.EndDate <= DateTime.Now)
-                                {
-                                    <td><span class="badge bg-danger">Неактивний</span></td>
-                                }
-
-                                else
-                                {
-                                    <td><span class="badge bg-success">Активний</span></td>
-                                }
                                 <td>
                                     @if (stb.IsFrozen)
                                     {
-                                        <a class="btn-outline-light" asp-action="UnfrozeSubscription" asp-route-studentId="@stb.StudentId"
-                                        asp-route-subscriptionId="@stb.SubscriptionId">
+                                        <span class="badge bg-warning text-dark">Заморожений</span>
+                                    }
+                                    else if (stb.EndDate <= DateTime.Now)
+                                    {
+                                        <span class="badge bg-danger">Неактивний</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">Активний</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (stb.IsFrozen)
+                                    {
+                                        <a class="btn btn-outline-secondary"
+                                           asp-action="UnfrozeSubscription"
+                                           asp-route-studentId="@stb.StudentId"
+                                           asp-route-subscriptionId="@stb.SubscriptionId">
                                             Розморозити
                                         </a>
                                     }
                                     else
                                     {
-                                        <a class="btn-outline-light" asp-action="FrozeSubscription" asp-route-studentId="@stb.StudentId"
+                                        <a class="btn btn-outline-secondary"
+                                           asp-action="FrozeSubscription"
+                                           asp-route-studentId="@stb.StudentId"
                                            asp-route-subscriptionId="@stb.SubscriptionId">
                                             Заморозити
                                         </a>
                                     }
-                                   
-                                </td>
-                                <td>
-                                    <a asp-action="StudentSubscriptionDetails" asp-route-studentId="@stb.StudentId"
+
+                                    <a asp-action="StudentSubscriptionDetails"
+                                       asp-route-studentId="@stb.StudentId"
                                        asp-route-subscriptionId="@stb.SubscriptionId"
-                                       class="btn btn-outline-info btn-sm me-2">
+                                       class="btn btn-outline-info btn-sm ms-2">
                                         <i class="bi bi-eye"></i> Деталі
                                     </a>
                                 </td>
@@ -104,4 +122,3 @@
         </table>
     </div>
 </div>
-

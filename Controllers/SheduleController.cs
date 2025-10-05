@@ -58,7 +58,7 @@ namespace MaksGym.Controllers
             {
                 TempData["ErrorMessage"] = "У цьому залі вже є заняття в обраний час!";
                 model.Rooms = _context.Rooms.ToList();
-                return View(model);
+                return RedirectToAction("Details", "Group", new { id = model.GroupId });
             }
 
             var schedule = new Schedule

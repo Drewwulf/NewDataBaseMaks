@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MaksGym.Models.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
+using System.Text.RegularExpressions;
 
 [Authorize(Roles = "Admin")]
 public class StudentController : Controller
@@ -111,11 +112,27 @@ public class StudentController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    private DateTime CalculateEndDate(DateTime start, int sessions, List<DayOfWeek> lessonDays)
+    {
+        int counted = 0;
+        DateTime date = start;
+        while (counted < sessions)
+        {
+            if (lessonDays.Contains(date.DayOfWeek))
+                counted++;
+            date = date.AddDays(1);
+
+        }
+        return date.AddDays(-1);
+    }
     public async Task<IActionResult> Details(int id)
     {
         var student = _context.Students
-            .Include(s => s.User).Include(ss => ss.StudentsToSubscriptions).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Subscription).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Freezes)
+            .Include(s => s.User).Include(ss => ss.StudentsToSubscriptions).Include(sg => sg.StudentToGroups).ThenInclude(g => g.Group).ThenInclude(sh => sh.Shedules).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Subscription).Include(ss => ss.StudentsToSubscriptions).ThenInclude(sts => sts.Freezes)
             .FirstOrDefault(s => s.StudentId == id);
+
+
+
 
 
 
@@ -124,15 +141,47 @@ public class StudentController : Controller
         {
             return NotFound("Студент не знайдений");
         }
+        var groups = student.StudentToGroups.Select(s => s.Group).ToList();
+
         var hasFrozen = await _context.StudentsToSubscriptions
             .Include(sts => sts.Freezes)
             .AnyAsync(sts => sts.StudentId == id && sts.Freezes.Any(f => f.FreezeEnd > DateTime.Now));
+        foreach (var sts in student.StudentsToSubscriptions)
+        {
+            var upcomingLessons = await _context.Shedules
+    .Where(s => s.GroupsId == sts.GroupId && !s.IsDeleted)
+    .ToListAsync();
+            var lessonDays = upcomingLessons
+     .Select(s => (DayOfWeek)s.DayOfWeek)
+     .ToList();
+            DateTime today = DateTime.Today;
+            DateTime dateTime = sts.StartDate;
+            int countedSessions = 0;
+            while (countedSessions < sts.ActiveSessions)
+            {
+                if (lessonDays.Contains(dateTime.DayOfWeek))
+                {
+                    countedSessions++;
+                }
+                dateTime = dateTime.AddDays(1);
+            }
+
+            DateTime subscriptionEndDate = dateTime.AddDays(-1);
+            sts.EndDate = subscriptionEndDate;
+            _context.SaveChanges();
+        }
+
+        foreach (var sts in student.StudentsToSubscriptions)
+        {
+            sts.EndDate = CalculateEndDate(sts.StartDate, sts.ActiveSessions, student.StudentToGroups.FirstOrDefault(sg => sg.GroupsId == sts.GroupId)?.Group.Shedules.Select(sh => (DayOfWeek)sh.DayOfWeek).ToList() ?? new List<DayOfWeek>());
+
+        }
         var model = new StudentDetailsViewModel
         {
             NewStudent = student,
             Subscriptions = await _context.Subscriptions.Where(s => !s.IsDeleted).ToListAsync(),
 
-
+            StudentGroup = groups,
 
         };
         return View(model);
@@ -143,19 +192,34 @@ public class StudentController : Controller
     public async Task<IActionResult> AddSubscription(StudentDetailsViewModel studentDetailsViewModel)
     {
         var student = await _context.Students
-            .Include(s => s.StudentsToSubscriptions).Include(s => s.User)
+            .Include(s => s.StudentsToSubscriptions).Include(s => s.User).Include(g => g.StudentToGroups).ThenInclude(s => s.Group)
             .Where(s => !s.IsDeleted)
             .FirstOrDefaultAsync(s => s.StudentId == studentDetailsViewModel.NewStudent.StudentId);
 
+       
         if (student == null)
         {
             return NotFound("Студент не знайдений");
         }
-
         var subscription = await _context.Subscriptions.FindAsync(studentDetailsViewModel.SubscriptionId);
         if (subscription == null)
         {
             return NotFound("Абонемент не знайдений");
+        }
+
+        var upcomingLessons = await _context.Shedules
+     .Where(s => s.GroupsId == studentDetailsViewModel.GroupId && !s.IsDeleted)
+     .ToListAsync();
+        DateTime today = DateTime.Today;
+        DateTime nearestLessonDate = today.AddDays(7);
+
+        foreach (var s in upcomingLessons)
+        {
+            int daysUntilLesson = ((int)s.DayOfWeek - (int)today.DayOfWeek + 7) % 7;
+            DateTime lessonDate = today.AddDays(daysUntilLesson);
+            if (lessonDate < nearestLessonDate)
+                nearestLessonDate = lessonDate;
+
         }
         if (student.StudentsToSubscriptions.Any(sts => sts.SubscriptionId == subscription.SubscriptionId && sts.EndDate > DateTime.Now))
         {
@@ -164,18 +228,25 @@ public class StudentController : Controller
             var model = new StudentDetailsViewModel
             {
                 NewStudent = student,
-                Subscriptions = await _context.Subscriptions.Where(s => !s.IsDeleted).ToListAsync()
+                Subscriptions = await _context.Subscriptions.Where(s => !s.IsDeleted).ToListAsync(),
+                StudentGroup = student.StudentToGroups.Select(s => s.Group).ToList(),
             };
 
             return View("Details", model);
         }
+
+
         var studentSubscription = new StudentsToSubscription
         {
             StudentId = student.StudentId,
             SubscriptionId = subscription.SubscriptionId,
-            StartDate = DateTime.Now,
-            EndDate = DateTime.Now.AddDays(subscription.DurationInDays)
+            StartDate = nearestLessonDate,
+            EndDate = DateTime.Now.AddDays(subscription.DurationInDays),
+            GroupId = studentDetailsViewModel.GroupId,
+            ActiveSessions = studentDetailsViewModel.DaysToPay
+
         };
+
 
         _context.StudentsToSubscriptions.Add(studentSubscription);
         await _context.SaveChangesAsync();
@@ -243,7 +314,7 @@ public class StudentController : Controller
         }
         var studentSub = await _context.StudentsToSubscriptions
     .Where(s => s.StudentId == studentId && s.SubscriptionId == subscriptionId)
-    .OrderByDescending(s => s.StartDate) 
+    .OrderByDescending(s => s.StartDate)
     .FirstOrDefaultAsync();
 
         if (studentSub != null)
@@ -275,7 +346,7 @@ public class StudentController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> AddBalance(StudentViewModel student)
     {
-        
+
         return RedirectToAction("Details");
     }
 }
