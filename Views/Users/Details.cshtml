@@ -1,0 +1,79 @@
+﻿@model MaksGym.Models.UserDetailViewModel
+
+@{
+    ViewData["Title"] = "Деталі користувача";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9 col-sm-12">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-info text-white text-center">
+                    <h3 class="mb-0">Деталі користувача</h3>
+                </div>
+                <div class="card-body p-4">
+
+                    <div class="mb-4">
+                        <h5><b>ПІБ:</b> @Model.User.FullName</h5>
+                        <p><b>Телефон:</b> @Model.User.PhoneNumber</p>
+                        <p><b>Дата народження:</b> @Model.User.DateOfBirth</p>
+                        <p><b>Роль:</b> @Model.User.Role</p>
+                        <p><b>Активний:</b> @(Model.User.IsActive ? "Так" : "Ні")</p>
+                    </div>
+
+                    <hr />
+
+                    <h5 class="mb-3">Редагувати користувача</h5>
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="User.Id" />
+
+                        <div class="mb-3">
+                            <label asp-for="User.FullName" class="form-label fw-bold">ПІБ</label>
+                            <input asp-for="User.FullName" class="form-control" />
+                            <span asp-validation-for="User.FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="User.PhoneNumber" class="form-label fw-bold">Телефон</label>
+                            <input asp-for="User.PhoneNumber" class="form-control" />
+                            <span asp-validation-for="User.PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="User.DateOfBirth" class="form-label fw-bold">Дата народження</label>
+                            <input asp-for="User.DateOfBirth" type="date" class="form-control" />
+                            <span asp-validation-for="User.DateOfBirth" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="User.Role" class="form-label fw-bold">Роль</label>
+                            <select asp-for="User.Role" class="form-select">
+                                <option value="Admin">Адмін</option>
+                                <option value="Coach">Тренер</option>
+                                <option value="Student">Студент</option>
+                            </select>
+                        </div>
+
+                     
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-save"></i> Зберегти зміни
+                            </button>
+                            <a asp-action="Index" asp-controller="Users" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left"></i> Назад
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

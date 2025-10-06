@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <!-- Поле пошуку -->
+
     <div class="row mt-5 mb-3">
         <div class="col-md-6">
             <input type="text" id="searchCoach" class="form-control" placeholder="Пошук тренера..." />
@@ -79,9 +79,19 @@
                                             <td>@coach.CoachId</td>
                                             <td>@coach.User.FullName</td>
                                             <td>
-                                                <img src="@coach.PhotoPath" alt="Фото тренера"
-                                                     class="rounded-circle shadow-sm"
-                                                     style="width: 80px; height: 80px; object-fit: cover;" />
+                                                @if (coach.PhotoPath != null)
+                                                {
+                                                    <img src="@coach.PhotoPath" alt="Фото студента"
+                                                         class="rounded-circle shadow-sm"
+                                                         style="width: 80px; height: 80px; object-fit: cover;" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="/uploads/iconprfile.png" alt="Фото студента"
+                                                         class="rounded-circle shadow-sm"
+                                                         style="width: 80px; height: 80px; object-fit: cover; background-color:darkgray" />
+                                                }
+
                                             </td>
                                             <td class="text-center">
                                                 <a asp-action="Delete" asp-route-id="@coach.CoachId"

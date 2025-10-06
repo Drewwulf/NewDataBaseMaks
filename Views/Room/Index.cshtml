@@ -40,7 +40,6 @@
         </div>
     </div>
 
-    <!-- Поле пошуку -->
     <div class="row mt-5 mb-3">
         <div class="col-md-6">
             <input type="text" id="searchRoom" class="form-control" placeholder="Пошук залу..." />
@@ -77,6 +76,10 @@
                                                 <a asp-action="Delete" asp-route-id="@room.RoomId"
                                                    class="btn btn-outline-danger btn-sm">
                                                     <i class="bi bi-trash"></i> Видалити
+                                                </a>
+                                                <a asp-action="Details" asp-route-id="@room.RoomId"
+                                                   class="btn btn-outline-info btn-sm">
+                                                    <i class="bi bi-trash"></i> Деталі
                                                 </a>
                                             </td>
                                         </tr>

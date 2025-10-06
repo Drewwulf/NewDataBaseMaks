@@ -1,0 +1,51 @@
+﻿@model MaksGym.Models.ViewModels.RoomViewModel
+
+@{
+    ViewData["Title"] = "Деталі залу";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-info text-white text-center">
+                    <h3 class="mb-0">Деталі залу</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="NewRoom.RoomId" />
+
+                        <div class="mb-3">
+                            <label asp-for="NewRoom.RoomName" class="form-label fw-bold">Назва залу</label>
+                            <input asp-for="NewRoom.RoomName" class="form-control" />
+                            <span asp-validation-for="NewRoom.RoomName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="NewRoom.RoomDescription" class="form-label fw-bold">Опис залу</label>
+                            <textarea asp-for="NewRoom.RoomDescription" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="NewRoom.RoomDescription" class="text-danger"></span>
+                        </div>
+
+                    
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-save"></i> Зберегти
+                            </button>
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary px-4">
+                                <i class="bi bi-arrow-left"></i> Назад
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

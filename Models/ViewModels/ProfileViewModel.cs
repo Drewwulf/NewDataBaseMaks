@@ -9,7 +9,9 @@
         public List<Group> groups { get; set; } = new List<Group>();
         public List<Subscription> subscriptions { get; set; } = new List<Subscription>();
         public List<StudentsToSubscription> studentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
+
+        public List<Transaction>? transactions { get; set; }
+        public List<Training>? trainings { get; set; }
+
     }
-
-
 }

@@ -5,16 +5,64 @@
 
 <div class="container my-4">
     <div class="row g-3">
-        <div class="col-12">
-            <div class="card shadow-sm text-center p-3">
-                <h2 class="fw-bold mb-0">Твої напрямки</h2>
-                <ul class="list-inline mt-2">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm p-4 text-center">
+                @if (string.IsNullOrEmpty(Model.PhotoUrl))
+                {
+                    <img src="https://cdn-icons-png.flaticon.com/512/10/10938.png" class="img-fluid rounded-circle" />
+                }
+                else
+                {
+                    <img src="@Model.PhotoUrl" class="img-fluid rounded-circle" />
+                }
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <h3 class="fw-bold">@Model.UserName</h3>
+
+                <h5 class="mt-3">Мої групи</h5>
+                <ul class="list-group">
                     @if (Model.groups != null)
                     {
                         @foreach (var group in Model.groups)
                         {
-                            <li class="list-inline-item badge bg-primary fs-6">
-                                @(group.Direction?.DirectionName ?? "-")
+                            <li class="list-group-item">
+                                <strong>@group.GroupName</strong> - @(group.Direction?.DirectionName ?? "-")
+                                <br />
+                                Тренер: @(group.Coach?.User?.FullName ?? "-")
+                            </li>
+                        }
+                    }
+                </ul>
+
+                <h5 class="mt-3">Мої абонементи</h5>
+                <ul class="list-group">
+                    @if (Model.studentsToSubscriptions != null)
+                    {
+                        @foreach (var sts in Model.studentsToSubscriptions)
+                        {
+                            <li class="list-group-item">
+                                @sts.Subscription.Name
+                                <br />
+                                Початок: @sts.StartDate.ToString("dd.MM.yyyy")
+                                - Кінець: @sts.EndDate.ToString("dd.MM.yyyy")
+                                <br />
+                                Статус:
+                                @if (sts.IsFrozen)
+                                {
+                                    <span class="text-warning">Заморожено</span>
+                                }
+                                else if (sts.EndDate < DateTime.Now)
+                                {
+                                    <span class="text-danger">Неактивний</span>
+                                }
+                                else
+                                {
+                                    <span class="text-success">Активний</span>
+                                }
                             </li>
                         }
                     }
@@ -22,153 +70,66 @@
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="card shadow-sm p-3 text-center">
-                <h5 class="fw-bold text-muted">Ім'я користувача</h5>
-                <p class="fs-5 mb-0">@Model.UserName</p>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm p-3 text-center">
-                <h5 class="fw-bold text-muted">Мої групи</h5>
-                <ul class="list-group list-group-flush">
-                    @if (Model.groups != null)
-                    {
-                        @foreach (var group in Model.groups)
+        <div class="col-12 mt-4">
+            <div class="card shadow-sm p-4">
+                <h5 class="fw-bold">Історія транзакцій</h5>
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Дата</th>
+                            <th>Сума</th>
+                            <th>Підтверджено</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.transactions != null)
                         {
-                            <li class="list-group-item">@group.GroupName</li>
-                        }
-                    }
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm p-4 text-center" style="min-height: 300px; background: linear-gradient(#eef7fd, #eef7fd 55%, #dfe7c6 55%, #dfe7c6);">
-                @if (string.IsNullOrEmpty(Model.PhotoUrl))
-                {
-                    <img src="https://cdn-icons-png.flaticon.com/512/10/10938.png" class="img-fluid" />
-                }
-                else
-                {
-                    <img src="@Model.PhotoUrl" class="img-fluid" />
-                }
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm p-4 text-center">
-                <h5 class="fw-bold text-muted">Мої абонементи</h5>
-                <ul class="list-group list-group-flush">
-                    @if (Model.subscriptions != null)
-                    {
-                        @foreach (var subscription in Model.subscriptions)
-                        {
-                            <li class="list-group-item">@subscription.Name</li>
-                        }
-                    }
-                </ul>
-
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm p-4 text-center">
-                <span class="fs-5 fw-bold">ТЕРМІН ДІЇ ДО</span>
-                <ul class="list-group list-group-flush">
-                    @if (Model.subscriptions != null)
-                    {
-                        @foreach(var studenToSubscription in Model.studentsToSubscriptions)
-                        {
-                            if(studenToSubscription.IsFrozen)
+                            @foreach (var trx in Model.transactions)
                             {
-                                <li class="list-group-item text-warning">Заморожено</li>
+                                <tr>
+                                    <td>@trx.PaymentDate.ToString("dd.MM.yyyy")</td>
+                                    <td>@trx.Value?.ToString("F2") ?? "-" </td>
+                                    <td>@(trx.PaymentConfirmed ? "Так" : "Ні")</td>
+                                </tr>
                             }
-                            else  if (studenToSubscription.EndDate >= DateTime.Now)
-                            {
-                                <li class="list-group-item">@studenToSubscription.EndDate</li>
-
-                            }
-
-                            else if (studenToSubscription.EndDate < DateTime.Now){
-                                <li class="list-group-item text-success">Неаактвиний з @studenToSubscription.EndDate</li>
-                            }
-                            
-                            }
-                        
-                    }
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm p-4 text-center">
-                <h5 class="fw-bold text-muted">КОРИСНІ ПОСИЛАННЯ</h5>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm p-4 text-center">
-                <h5 class="fw-bold">НОВИНИ</h5>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-5">
-        <h3 class="fw-bold text-center mb-3">Твій графік занять</h3>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered align-middle shadow-sm">
-                <thead class="table-dark text-center">
-                    <tr>
-                        <th>Група</th>
-                        <th>День</th>
-                        <th>Час</th>
-                        <th>Напрямок</th>
-                        <th>Тренер</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.groups != null)
-                    {
-                        @foreach (var group in Model.groups)
-                        {
-                            <tr>
-                                <td class="text-center">@group.GroupName</td>
-                                <td>
-                                    @if (group.Shedules != null)
-                                    {
-                                        @foreach (var shedule in group.Shedules)
-                                        {
-                                            <div>@shedule.DayOfWeek</div>
-                                        }
-                                    }
-                                </td>
-                                <td>
-                                    @if (group.Shedules != null)
-                                    {
-                                        @foreach (var shedule in group.Shedules)
-                                        {
-                                            <div>@shedule.StartTime - @shedule.EndTime</div>
-                                        }
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @(group.Direction != null
-                                        ? group.Direction.DirectionName
-                                        : "-")
-                                </td>
-                                <td class="text-center">
-                                    @(group.Coach?.User != null
-                                        ? group.Coach.User.FullName
-                                        : "-")
-                                </td>
-
-                            </tr>
                         }
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+        <div class="col-12 mt-4">
+            <div class="card shadow-sm p-4">
+                <h5 class="fw-bold">Історія занять</h5>
+                <table class="table table-striped table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Дата та час</th>
+                            <th>Група</th>
+                            <th>Напрямок</th>
+                            <th>Тренер</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.trainings != null)
+                        {
+                            @foreach (var t in Model.trainings)
+                            {
+                                var group = Model.groups.FirstOrDefault(g => g.GroupsId == t.SheduleId);
+                                <tr>
+                                    <td>@t.StartTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                    <td>@(group?.GroupName ?? "-")</td>
+                                    <td>@(group?.Direction?.DirectionName ?? "-")</td>
+                                    <td>@(group?.Coach?.User?.FullName ?? "-")</td>
+                                    <td>@(t.IsConducted ? "Проведено" : "Не проведено")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>

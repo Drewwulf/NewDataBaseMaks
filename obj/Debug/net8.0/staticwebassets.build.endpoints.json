@@ -5415,6 +5415,88 @@
       ]
     },
     {
+      "Route": "uploads/iconprfile.bjic9bpo98.png",
+      "AssetFile": "uploads/iconprfile.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "91541"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"1y38TLTubC96BHtfY9Tgkbij3/oB+v9mnHXFWHcx8/I=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 06 Oct 2025 09:07:27 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "bjic9bpo98"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-1y38TLTubC96BHtfY9Tgkbij3/oB+v9mnHXFWHcx8/I="
+        },
+        {
+          "Name": "label",
+          "Value": "uploads/iconprfile.png"
+        }
+      ]
+    },
+    {
+      "Route": "uploads/iconprfile.png",
+      "AssetFile": "uploads/iconprfile.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "91541"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"1y38TLTubC96BHtfY9Tgkbij3/oB+v9mnHXFWHcx8/I=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 06 Oct 2025 09:07:27 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-1y38TLTubC96BHtfY9Tgkbij3/oB+v9mnHXFWHcx8/I="
+        }
+      ]
+    },
+    {
       "Route": "uploads/vynogradiv-zr-team.0lrkcimboa.jpg",
       "AssetFile": "uploads/vynogradiv-zr-team.jpg",
       "Selectors": [],

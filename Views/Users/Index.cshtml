@@ -92,11 +92,11 @@
                                             <td>@user.FullName</td>
                                             <td>@user.PhoneNumber</td>
                                             <td class="text-center">
-                                                <a asp-action="Details" asp-route-id="@user.Id"
+                                                <a asp-action="Details" asp-controller="Account"  asp-route-id="@user.Id"
                                                    class="btn btn-outline-info btn-sm">
                                                     <i class="bi bi-info-circle"></i> Деталі
                                                 </a>
-                                                <a asp-action="Delete" asp-route-id="@user.Id"
+                                                <a asp-action="Delete" asp-controller="Account" asp-route-id="@user.Id"
                                                    class="btn btn-outline-danger btn-sm"
                                                    onclick="return confirm('Ви впевнені, що хочете видалити цього користувача?');">
                                                     <i class="bi bi-trash"></i> Видалити

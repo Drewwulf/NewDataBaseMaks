@@ -16,13 +16,13 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <div class="mb-3">
-                            <label asp-for="direction.DirectionName" class="form-label fw-bold"></label>
+                            <label asp-for="direction.DirectionName" class="form-label fw-bold">Назва напрямку</label>
                             <input asp-for="direction.DirectionName" class="form-control" placeholder="Введіть назву напрямку" />
                             <span asp-validation-for="direction.DirectionName" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="direction.DirectionDescription" class="form-label fw-bold"></label>
+                            <label asp-for="direction.DirectionDescription" class="form-label fw-bold">Опис напрямку</label>
                             <textarea asp-for="direction.DirectionDescription" class="form-control" rows="3" placeholder="Опишіть напрямок"></textarea>
                             <span asp-validation-for="direction.DirectionDescription" class="text-danger"></span>
                         </div>
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <!-- Поле пошуку -->
+
     <div class="row mt-5 mb-3">
         <div class="col-md-6">
             <input type="text" id="searchDirection" class="form-control" placeholder="Пошук напрямку..." />

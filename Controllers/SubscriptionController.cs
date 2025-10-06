@@ -65,19 +65,38 @@ namespace MaksGym.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int subscriptionId)
         {
-            var subscription = _context.Subscriptions.Find(subscriptionId);
-            if (subscription != null)
+          
+            var subscription = await _context.Subscriptions
+                .FirstOrDefaultAsync(s => s.SubscriptionId == subscriptionId && !s.IsDeleted);
+
+            if (subscription == null)
+                return NotFound(); 
+
+            var model = new SubscriptionDetailViewModels
             {
-                var model = new SubscriptionDetailViewModels
-                {
-                    CurrentSubscription = subscription
-                };
+                CurrentSubscription = subscription
+            };
 
-                return View(model);
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(SubscriptionDetailViewModels vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var subscription = await _context.Subscriptions.FindAsync(vm.CurrentSubscription.SubscriptionId);
+                if (subscription == null) return NotFound();
+
+                subscription.Name = vm.CurrentSubscription.Name;
+                subscription.DurationInDays = vm.CurrentSubscription.DurationInDays;
+                subscription.Price = vm.CurrentSubscription.Price;
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            return View();
 
-            
+            return View("Details", vm);
         }
         [HttpPost]
         public async Task<IActionResult> UpdatePrice(SubscriptionDetailViewModels model)

@@ -3,6 +3,7 @@ using MaksGym.Models;
 using MaksGym.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [Authorize(Roles = "Admin")]
 public class RoomController : Controller
@@ -55,4 +56,35 @@ public class RoomController : Controller
         }
         return RedirectToAction(nameof(Index));
     }
+    public async Task<IActionResult> Details(int id)
+    {
+        var room = await _context.Rooms
+            .FirstOrDefaultAsync(r => r.RoomId == id && !r.IsDeleted);
+
+        if (room == null)
+            return NotFound();
+
+        var vm = new RoomViewModel { NewRoom = room };
+        return View(vm);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(RoomViewModel vm)
+    {
+        if (ModelState.IsValid)
+        {
+            var room = await _context.Rooms.FindAsync(vm.NewRoom.RoomId);
+            if (room == null) return NotFound();
+
+            room.RoomName = vm.NewRoom.RoomName;
+            room.RoomDescription = vm.NewRoom.RoomDescription;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        return View("Details", vm);
+    }
+
 }

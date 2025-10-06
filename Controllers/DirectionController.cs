@@ -4,6 +4,7 @@ using MaksGym.Models;
 using MaksGym.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 [Authorize(Roles = "Admin")]
 public class DirectionController : Controller
@@ -57,4 +58,34 @@ public class DirectionController : Controller
         return RedirectToAction(nameof(Index));
 
     }
+    public async Task<IActionResult> Details(int id)
+    {
+        var direction = await _context.Directions
+            .FirstOrDefaultAsync(d => d.DirectionId == id && !d.isDeleted);
+
+        if (direction == null)
+            return NotFound();
+
+        var vm = new DirectionViewModel { direction = direction };
+        return View(vm);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(DirectionViewModel vm)
+    {
+        if (ModelState.IsValid)
+        {
+            var direction = await _context.Directions.FindAsync(vm.direction.DirectionId);
+            if (direction == null) return NotFound();
+
+            direction.DirectionName = vm.direction.DirectionName;
+            direction.DirectionDescription = vm.direction.DirectionDescription;
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        return View("Details", vm);
+    }
+
 }
