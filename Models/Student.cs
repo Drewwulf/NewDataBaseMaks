@@ -11,10 +11,10 @@ namespace MaksGym.Models
         public string? PhotoPath { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Balance { get; set; } = 0;
+        public decimal? Balance { get; set; } = 0;
         public ApplicationUser? User { get; set; } = null!;
         public bool IsDeleted { get; set; } = false;
-        public float discount { get; set; } = 0; 
+        public decimal? discount { get; set; } = 0; 
         public ICollection<StudentToGroup> StudentToGroups { get; set; } = new List<StudentToGroup>();
         public ICollection<StudentsToSubscription> StudentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();

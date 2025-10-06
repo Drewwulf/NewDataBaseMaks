@@ -25,7 +25,6 @@ public class TrainingCheckService : IHostedService, IDisposable
             var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var today = DateTime.Today;
 
-            // Беремо всі активні підписки
             var activeSubs = _context.StudentsToSubscriptions
                 .Where(sts => sts.EndDate >= today)
                 .Include(sts => sts.Student)
@@ -34,7 +33,6 @@ public class TrainingCheckService : IHostedService, IDisposable
 
             foreach (var sub in activeSubs)
             {
-                // Беремо графік групи студента
                 var schedules = _context.Shedules
                     .Include(s => s.Group)
                         .ThenInclude(g => g.Coach)
@@ -44,7 +42,6 @@ public class TrainingCheckService : IHostedService, IDisposable
                     .Where(s => s.GroupsId == sub.GroupId && !s.IsDeleted)
                     .ToList();
 
-                // Проходимо всі дні від сьогодні до кінця підписки
                 DateTime date = today;
                 while (date <= sub.EndDate)
                 {
@@ -56,11 +53,10 @@ public class TrainingCheckService : IHostedService, IDisposable
 
                     foreach (var schedule in todaysSchedules)
                     {
-                        // Формуємо точний час заняття
-                     var trainingDateTime = date.Date + schedule.StartTime;
+                       
+                        var trainingDateTime = date.Date + schedule.StartTime;
 
 
-                        // Перевірка на дублікати
                         bool trainingExists = _context.Trainings
                             .Any(t => t.StudentId == sub.StudentId
                                    && t.StartTime == trainingDateTime
@@ -72,7 +68,7 @@ public class TrainingCheckService : IHostedService, IDisposable
                             {
                                 StudentId = sub.StudentId,
                                 SheduleId = schedule.SheduleId,
-                                StartTime = trainingDateTime, // точний час
+                                StartTime = trainingDateTime, 
                                 CoachId = schedule.Group.CoachId,
                                 RoomId = schedule.RoomId,
                                 subscriptionId = sub.SubscriptionId,
@@ -82,13 +78,15 @@ public class TrainingCheckService : IHostedService, IDisposable
 
                             _context.Trainings.Add(training);
                         }
+
+                        
                     }
 
                     date = date.AddDays(1);
                 }
             }
 
-            // Позначаємо минулі заняття як проведені
+            
             var pastTrainings = _context.Trainings
                 .Where(t => t.StartTime < DateTime.Now && !t.IsConducted)
                 .ToList();
@@ -96,16 +94,40 @@ public class TrainingCheckService : IHostedService, IDisposable
             foreach (var training in pastTrainings)
             {
                 training.IsConducted = true;
+
+                var student = _context.Students.Find(training.StudentId);
+                var subscription = _context.Subscriptions.Find(training.subscriptionId);
+                var studentToSubscription = _context.StudentsToSubscriptions
+                    .FirstOrDefault(sts => sts.StudentId == training.StudentId && sts.SubscriptionId == training.subscriptionId && !sts.IsDeleted);
+
+                if (student == null || subscription == null)
+                    continue;
+
+                if (studentToSubscription != null && studentToSubscription.IsFrozen != true)
+                {
+                    if (studentToSubscription.ActiveSessions > 0)
+                    {
+                        studentToSubscription.ActiveSessions -= 1;
+                        student.Balance -= subscription.Price * (student.discount / 100);
+                        _context.Transactions.Add(new Transaction
+                        {
+                            StudentId = student.StudentId,
+                            Value = -subscription.Price * (student.discount / 100),
+                            PaymentDate = DateTime.Now, 
+                           
+                        });
+                    }
+                    else
+                        continue;
+                }
             }
 
-            // Зберігаємо зміни
             _context.SaveChanges();
         }
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        // Запуск одразу і повтор кожну хвилину
         _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
         return Task.CompletedTask;
     }

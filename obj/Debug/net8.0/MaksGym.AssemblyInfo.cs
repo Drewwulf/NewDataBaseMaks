@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MaksGym")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d5182fa1c13951041910015a9dc79e996374aa8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f0128a8e6b6041ec45d044ede2fdfe74dd12c8db")]
 [assembly: System.Reflection.AssemblyProductAttribute("MaksGym")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MaksGym")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

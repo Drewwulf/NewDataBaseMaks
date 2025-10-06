@@ -9,6 +9,8 @@
         public int GroupId { get; set; }
         public  List<Group> StudentGroup { get; set; }
        public int DaysToPay { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal? BalanceToAdd { get; set; }
         public bool isFrozen { get; set; }
     }
 }

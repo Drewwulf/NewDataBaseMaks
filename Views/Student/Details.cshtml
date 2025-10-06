@@ -20,9 +20,21 @@
 
             <form asp-action="AddBalance" class="mb-3">
                 <input type="hidden" asp-for="NewStudent.StudentId" />
-                <input asp-for="NewStudent.Balance" type="number" class="form-control mb-2" />
+
+                <label>Сума поповнення</label>
+                <input asp-for="BalanceToAdd" type="number" class="form-control mb-2" placeholder="Введіть суму" />
+
                 <input type="submit" class="btn btn-success" value="Додати баланс" />
             </form>
+            <form asp-action="AddDiscount" class="mb-3">
+                <input type="hidden" asp-for="NewStudent.StudentId" />
+
+                <label>Знижка (%)</label>
+                <input asp-for="Discount" type="number" class="form-control mb-2" min="0" max="100" placeholder="0-100%" />
+
+                <input type="submit" class="btn btn-warning" value="Зберегти знижку" />
+            </form>
+
         </div>
 
         <form asp-action="AddSubscription" class="mb-4">

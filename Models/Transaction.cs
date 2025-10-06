@@ -12,9 +12,9 @@ namespace MaksGym.Models
         public Student Student { get; set; } = null!;
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Value { get; set; }
+        public decimal? Value { get; set; }
 
-        public DateOnly PaymentDate { get; set; }     // date
+        public DateTime PaymentDate { get; set; }     // date
         public bool PaymentConfirmed { get; set; }    // bit
 
         public ICollection<StudentsToSubscription> StudentsToSubscriptions { get; set; } = new List<StudentsToSubscription>();
